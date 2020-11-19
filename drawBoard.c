@@ -3,36 +3,34 @@
 #include <string.h>
 #include <math.h>
 
-int main(){
+void printTble (char x[16]){
   const char DASH = '-';
-  const int LAST_RW = 16, MAX_RW = 4;
-  
-  char x[4][4] =  {{' ',' ',' ',' '},
-		   {' ',' ',' ',' '},
-		   {' ',' ',' ',' '},
-		   {' ',' ',' ',' '}};
+  const int MAX_RW = 4,
+    MAX_ELM = 16, MAX_DSH = 14;
+  /* this is the expected array for x   
+  char x[16] =  {' ',' ',' ',' ',
+		 ' ',' ',' ',' ',
+		 ' ',' ',' ',' ',
+		 ' ',' ',' ',' '};
+  */
+  for (int i = 0; i < MAX_ELM; i++){
+      // last col of the row case
+      if(((i+1) % MAX_RW) == 0){
+	printf(" %c \n", x[i]);
 
-  for (int i =0; i< MAX_RW; i++){
-    for(int j=0; j<MAX_RW; j++){
-
-      // last col of the row
-      if(((j+1) % MAX_RW) == 0){
-	printf(" %c \n", x[i][j]);
-
-	if(i+1 != MAX_RW){
-	  // print dashes
-	  for (int f = 0; f< 14 + 1; f++){
+	// print dashes
+	if(i+1 != MAX_ELM){
+	  for (int f = 0; f < MAX_DSH + 1; f++){
 	    printf("%c", DASH);
 	  }
 	  printf("\n");
 	}
+	
       }
       // normal case
       else{
-	printf(" %c |", x[i][j]);
+	printf(" %c |", x[i]);
       }
     }
-  }
-
-  return 0;
+  
 }
