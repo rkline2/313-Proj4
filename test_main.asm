@@ -13,10 +13,11 @@ main:
 	mov rdi,r8
 	mov rsi,16
 	xor rax,rax
+
 	call randomNum
 
 	add rax,97
-	mov [num_buff],rax
+	mov [num_buff],al
 
 	mov rax,1
 	mov rdi,1

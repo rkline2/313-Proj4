@@ -37,9 +37,7 @@ randomNum:
 	div r8			; (random_seed / 65536) % (max + 1)
 
 	mov rax,rdx		; value gets returned
-
-	add rdx,97
-	mov [num_b],dx
+				; Optional: convert to ascii before returning value  
 	
 	ret
 
