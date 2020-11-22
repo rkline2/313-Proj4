@@ -38,6 +38,5 @@ randomNum:
 
 	mov rax,rdx		; value gets returned
 				; Optional: convert to ascii before returning value  
-	
 	ret
 

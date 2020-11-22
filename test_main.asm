@@ -28,4 +28,5 @@ main:
 	syscall
 
 	mov rax,0
+
 	ret
