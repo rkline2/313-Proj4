@@ -1,4 +1,5 @@
 	extern randomNum
+	extern menu
 
 	section .data
 new_line:	       db      10
@@ -9,14 +10,9 @@ num_buff:	resq 2
 	
 	global main
 main:
-	RDRAND r8
-	mov rdi,r8
-	mov rsi,16
-	xor rax,rax
 
-	call randomNum
+	call menu
 
-	add rax,97
 	mov [num_buff],al
 
 	mov rax,1

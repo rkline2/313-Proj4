@@ -17,7 +17,7 @@ randomNum:
 	mov r9,rdi
 	
 	add r8,r9		; random_seed + seed
-	mul r8			;r8(random_seed + seed) * rax(1103515245)
+	mul r8			; r8(random_seed + seed) * rax(1103515245)
 
 	mov r8,rax		; storing result in r8
 	add r8,12345		; random_seed
