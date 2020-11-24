@@ -1,4 +1,4 @@
-	;; main.asm
+;; main.asm
 	extern  printf	; the C function, to be called
 	extern  scanf
 	extern  printTble
@@ -46,4 +46,3 @@ main:			; the program label for the entry point
 
 	mov     rax,0	; normal, no error, return value
 	ret	; return
-	

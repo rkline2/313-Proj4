@@ -1,10 +1,18 @@
+
 	extern randomNum
 	extern menu
+	extern compEasy
+	extern compHard
 
 	section .data
 new_line:	       db      10
+easy:		       db      'a'
+hard:		       db      'b'
+quit:		       db      'q'
+
 	section .bss
 num_buff:	resq 2
+menu_input:	resb 1
 	
 	section .text
 	
@@ -12,21 +20,18 @@ num_buff:	resq 2
 main:
 
 	call menu
-
-	mov [num_buff],al
-
-	mov rax,1
-	mov rdi,1
-	mov rsi,num_buff
-	mov rdx,2
-	syscall
-
-	mov rax,1
-	mov rdi,1
-	mov rsi,new_line
-	mov rdx,1
-	syscall
-
+	mov [menu_input],al
+	cmp [menu_input],[easy]
+	jne  else_if
+	call compEasy
+	jmp main	
+	
+else_if:
+	cmp [menu_input],[hard]
+	jne exit
+	call compHard
+	jmp main
+	
+exit:
 	mov rax,0
-
 	ret
