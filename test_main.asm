@@ -21,13 +21,13 @@ main:
 
 	call menu
 	mov [menu_input],al
-	cmp [menu_input],[easy]
+	cmp byte[menu_input],easy
 	jne  else_if
 	call compEasy
 	jmp main	
 	
 else_if:
-	cmp [menu_input],[hard]
+	cmp byte[menu_input],hard
 	jne exit
 	call compHard
 	jmp main

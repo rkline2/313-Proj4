@@ -28,7 +28,7 @@ play_easy:
 	mov r10,array
 	dec rbx
 	add r10,rbx		;pointing to position in array
-	mov [r10],120		;r10='x'
+	mov r10,120		;r10='x'
 	
 	call randomNum
 	xor rbx,rbx
@@ -36,12 +36,12 @@ play_easy:
 	xor r10,r10
 	mov r10,array
 	add r10,rbx
-	mov [r10],111		;r10='o'
+	mov r10,111		;r10='o'
 
 	mov rdi,[array]		;setting first parameter in check winner to array
 	call checkWinner
 	mov [winner],al
-	cmp winner,1
+	cmp byte[winner],1
 	jne play_easy		;while !winner
 	xor rax,rax		
 	ret
