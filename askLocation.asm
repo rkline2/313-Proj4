@@ -4,6 +4,7 @@
 	section	.data
 loc_prompt:     db "Enter a location on the board 1-16",0
 err:		db "Invalid Input!",0
+space_occupied:	db "This is not an empty space. Try again!",0
 	
 len_p:          equ $-loc_prompt
 fmt:		db "%s",10,0
@@ -18,7 +19,9 @@ askLocation:
 	;; rax value is returned
 	push rbp
 	mov rbp,rsp
-
+	
+	xor r10,r10
+	mov r10,rdi 		;place array into register
 	;; print(loc_prompt)  
 	mov rdi,fmt
 	mov rsi,loc_prompt
@@ -47,7 +50,11 @@ askLocation:
 	;; (location > 16)? repeat : continue
 	cmp bl,16
 	jg repeat
-
+	;; locate spot 
+	add r10b,bl
+	cmp r10b,32		;check if space is occupied
+	jne occupied
+	
 	;; return location
 	mov al,[location]
 	ret
@@ -59,6 +66,18 @@ repeat:
 	mov rsi,err
 	mov rax,0
 	
+	call printf
+	
+	pop rbp
+	jmp askLocation
+	
+occupied:
+	;; requests location again if space already occupied
+	push rbp
+	mov rdi,fmt
+	mov rsi,space_occupied
+	mov rax,0
+
 	call printf
 	
 	pop rbp
