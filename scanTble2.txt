@@ -42,52 +42,46 @@ int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Ind
 	}
 	
 	/***********************************************stupid diagonal case***********************************************/
-	int playerDiag1[4] = {NULL}, cpuDiag1[4] = {NULL}; playerRowIndex = 0; cpuRowIndex = 0;
+	int num_x_1 = 0, num_o_1 = 0, num_x_2 = 0, num_o_2 = 0;
 	for (int i = 0; i < 16; i += 5){
-		char temp1[2] = getcoord(arr[i]);
-		// rows only
 		if(arr[i] == 'x'){
-			playerDiag1[playerRowIndex] = temp1[1];
-			playerRowIndex++;
+			num_x_1++;
 		}
 
 		if(arr[i] == 'o'){
-			cpuDiag1[cpuRowIndex] = temp1[1];		
-			cpuRowIndex++;
-		}
+			num_o_1++;
+		}	
 
 	}
-	int playerDiag2[4] = {NULL}, cpuDiag2[4] = {NULL}; playerRowIndex = 0; cpuRowIndex = 0;
 	for (int i = 3; i < 13; i += 3){
 		char temp1[2] = getcoord(arr[i]);
 		// rows only
 		if(arr[i] == 'x'){
-			playerDiag2[playerRowIndex] = temp1[1];
-			playerRowIndex++;
+			num_x_2++;
 		}
 
 		if(arr[i] == 'o'){
-			cpuDiag2[cpuRowIndex] = temp1[1];		
-			cpuRowIndex++;
+			num_o_2++;
 		}
 
 	}
+	
+	int max_pl_dup = num_x_1 > num_x_2 ? num_x_1 : num_x_2;
+	int max_cpu_dup = num_o_1 > num_o_2 ? num_0_1 : num_o_2;
+	
 	/***********************************************stupid diagonal case***********************************************/
 	
 	int player_dup = FindMaxDup(playerRow, playerCol);
-	int playerDiag_Dup = FindMaxDup(playerDiag1, playerDiag2);
-
-	player_dup = player_dup > playerDiag_Dup ? player_dup : playerDiag_Dup;
-
+	
 	int cpu_dup = FindMaxDup(playerRow, playerCol);
-	int cpuDiag_Dup = FindMaxDup(cpuDiag1, cpuDiag2);
+	
 
 	cpu_dup = cpu_dup > cpuDiag_dup ? cpu_dup : cpuDiag_Dup;
 	
-	if (player_dup == 4) {return 2;}
-	if (cpu_dup == 4) {return 3;}
+	if (player_dup == 4 ||  max_pl_dup == 4) {return 2;}
+	if (cpu_dup == 4 || max_cpu_dup == 4) {return 3;}
 
-	if (player_dup == 3 || cpu_dup == 3) {return 1;}
+	if (player_dup == 3 || cpu_dup == 3 ||  max_pl_dup == 3 || max_cpu_dup == 3) {return 1;}
 	if (num_moves == 16) {return 4;}
 	
 return 0;
