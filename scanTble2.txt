@@ -44,6 +44,7 @@ int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Ind
 	/***********************************************stupid diagonal case***********************************************/
 	int num_x_1 = 0, num_o_1 = 0, num_x_2 = 0, num_o_2 = 0;
 	for (int i = 0; i < 16; i += 5){
+	
 		if(arr[i] == 'x'){
 			num_x_1++;
 		}
@@ -54,8 +55,7 @@ int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Ind
 
 	}
 	for (int i = 3; i < 13; i += 3){
-		char temp1[2] = getcoord(arr[i]);
-		// rows only
+	
 		if(arr[i] == 'x'){
 			num_x_2++;
 		}
