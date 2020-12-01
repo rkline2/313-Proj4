@@ -4,8 +4,8 @@ int checkWinner(int arr[], int num_moves){
 char playerRow[16] = {NULL}, playerCol[16] = {NULL}, 
 cpuRow[16] = {NULL}, cpuCol[16] = {NULL};
 int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Index = 0; 
-
-	for(int i=0; i < 16; i++){
+	int i = 0;
+	while(i < 16){
 
 	char temp1[2] = getcoord(arr[i]);
 	char temp2[2] = getcoord(arr[col_Index]);
@@ -13,6 +13,7 @@ int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Ind
 	if(arr[i] == 'x'){
 		playerRow[playerRowIndex] = temp1[1];
 		playerRowIndex++;
+	i++;
 	}
 
 	if(arr[i] == 'o'){
