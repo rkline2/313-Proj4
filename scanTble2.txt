@@ -1,0 +1,150 @@
+int checkWinner(int arr[], int num_moves){
+// return values: 0-no winner 1-almost winner 2-player wins 3- comp wins 4-tie/board filled
+
+char playerRow[16] = {NULL}, playerCol[16] = {NULL}, 
+cpuRow[16] = {NULL}, cpuCol[16] = {NULL};
+int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Index = 0; 
+	int i = 0;
+	while(i < 16){
+
+	char temp1[2] = getcoord(arr[i]);
+	char temp2[2] = getcoord(arr[col_Index]);
+	// rows only
+	if(arr[i] == 'x'){
+		playerRow[playerRowIndex] = temp1[1];
+		playerRowIndex++;
+	{
+	
+	
+
+	if(arr[i] == 'o'){
+		cpuRow[cpuRowIndex] = temp1[1];			
+		cpuRowIndex++;
+	}
+
+	// column's only
+	if(arr[col_Index] == 'x'){
+		playerCol[playerColIndex] = temp2[2];
+		playerColIndex++;
+	}
+	if(arr[col_Index] == 'o'){
+		cpuCol[cpuColIndex] = temp2[2];
+		cpuColIndex++;
+	}
+
+	// checker 
+	if((col_index / 4) + 1 != 4){
+		col_index +=4;	
+	}
+
+	else {
+		col_index = (i+1)/4;
+	}
+	
+	i++;
+	}
+	
+	/***********************************************stupid diagonal case***********************************************/
+	int num_x_1 = 0, num_o_1 = 0, num_x_2 = 0, num_o_2 = 0;
+	for (int i = 0; i < 16; i += 5){
+	
+		if(arr[i] == 'x'){
+			num_x_1++;
+		}
+
+		if(arr[i] == 'o'){
+			num_o_1++;
+		}	
+
+	}
+	for (int i = 3; i < 13; i += 3){
+	
+		if(arr[i] == 'x'){
+			num_x_2++;
+		}
+
+		if(arr[i] == 'o'){
+			num_o_2++;
+		}
+
+	}
+	
+	int max_pl_dup = num_x_1 > num_x_2 ? num_x_1 : num_x_2;
+	int max_cpu_dup = num_o_1 > num_o_2 ? num_0_1 : num_o_2;
+	
+	/***********************************************stupid diagonal case***********************************************/
+	
+	int player_dup = FindMaxDup(playerRow, playerCol);
+	int cpu_dup = FindMaxDup(playerRow, playerCol);
+	
+	if (player_dup == 4 ||  max_pl_dup == 4) {return 2;}
+	if (cpu_dup == 4 || max_cpu_dup == 4) {return 3;}
+
+	if (player_dup == 3 || cpu_dup == 3 ||  max_pl_dup == 3 || max_cpu_dup == 3) {return 1;}
+	if (num_moves == 16) {return 4;}
+	
+return 0;
+	
+	
+}
+
+
+
+string getcoord(int location){
+	coordinates: resb 2 // char coordinates[2];
+
+	int col = location % 4;
+
+	// not 4th col
+	if(col != 0){
+		char temp1 = (location / 4) + 1;
+		char temp2 = location % 4;
+
+		coordinates[1] = temp1;
+		coordinates[2] = temp2; 
+	}
+	// 4th col
+	else{
+		char temp = location / 4;
+
+		coordinates[1] = temp;
+		coordinates[2] = '4'
+	}
+return coordinates;
+}
+row = {1,4,5,2,3,4}
+col = {2,4,3,5,3,6}
+
+int FindMaxDup(char rows[], char cols[]){
+	// do it for rows
+	int max = 0;
+	int last = rows[0], max1 = 0, currNumDupes = 1;
+
+	for (int i = 1; i < rows.length(); i++) { 
+   		if (rows[i] == last) currNumDupes++;
+   		else { 
+        		max1 = max1 > currNumDupes ? max1 : currNumDupes;
+        		currNumDupes = 1;
+   		}
+   	last = arr[i];
+	}
+	max1 = max1 > currNumDupes ? max1 : currNumDupes; //if the most dupes is from the highest element
+	
+	// repeat for cols
+	int max2 = 0; last = cols[0]; currNumDupes = 1;
+	
+	for (int i = 1; i < cols.length(); i++) { 
+   		if (cols[i] == last) currNumDupes++;
+   		else { 
+        		max2 = max2 > currNumDupes ? max2 : currNumDupes;
+        		currNumDupes = 1;
+   		}
+   	last = arr[i];
+	}
+	max2 = max2 > currNumDupes ? max2 : currNumDupes; //if the most dupes is from the highest element
+
+	max = max1 > max2 ? max1 : max2;
+
+
+return max;
+}
