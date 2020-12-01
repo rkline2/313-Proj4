@@ -7,8 +7,8 @@ int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Ind
 	int i = 0;
 	while(i < 16){
 
-	char temp1[2] = getcoord(arr[i]);
-	char temp2[2] = getcoord(arr[col_Index]);
+	char temp1[2] = getcoord(i);
+	char temp2[2] = getcoord(col_Index);
 	// rows only
 	if(arr[i] == 'x'){
 		playerRow[playerRowIndex] = temp1[1];
