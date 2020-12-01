@@ -92,6 +92,8 @@ return 0;
 
 string getcoord(int location){
 	coordinates: resb 2 // char coordinates[2];
+	
+	location++;
 
 	int col = location % 4;
 
