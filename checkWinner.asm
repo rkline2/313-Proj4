@@ -12,6 +12,7 @@ playerColIndex:	resb 2
 cpuColIndex:	resb 2
 cpuRowIndex:	resb 2
 col_Index:	resb 2
+coordinates:	resb 2
 	
 	section .text
 	global checkWinner
@@ -168,6 +169,45 @@ done5:
 
 done6:
 	ret
+	
+getcoord:
+	xor r13,r13
+	;; rdi = location
+	inc rdi
+	mov rax,rdi
+	xor rdx,rdx
+	div 4
+	;; r13 = col
+	mov r13,rdx
+	
+	cmp r13,0
+	je  else1
+	inc rax
+	mov r10,rax
+	mov r11,r13
+	xor r9,r9
+	mov r9,coordinates
+	mov byte[coordinates],r10
+	inc r9
+	mov [r9],r11
+	jmp exit
+
+else1:
+	;; temp =r13
+	xor r13,r13
+	mov r13,rax
+	xor r9,r9
+	mov r9,coordinates
+	mov byte[coordinates],r13
+	inc r9
+	mov[r9],4
+	
+	jmp exit
+	
+exit:
+	mov rax,[coordinates]
+	ret
+	
 	
 	
 	
