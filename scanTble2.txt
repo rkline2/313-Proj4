@@ -72,11 +72,7 @@ int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Ind
 	/***********************************************stupid diagonal case***********************************************/
 	
 	int player_dup = FindMaxDup(playerRow, playerCol);
-	
 	int cpu_dup = FindMaxDup(playerRow, playerCol);
-	
-
-	cpu_dup = cpu_dup > cpuDiag_dup ? cpu_dup : cpuDiag_Dup;
 	
 	if (player_dup == 4 ||  max_pl_dup == 4) {return 2;}
 	if (cpu_dup == 4 || max_cpu_dup == 4) {return 3;}
@@ -89,9 +85,7 @@ return 0;
 	
 }
 
-cpuArr {11,...}
-cpuRow {3,....}
-cpuCol {3,....}
+
 
 string getcoord(int location){
 	coordinates: resb 2 // char coordinates[2];
