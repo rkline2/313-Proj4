@@ -13,8 +13,9 @@ int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Ind
 	if(arr[i] == 'x'){
 		playerRow[playerRowIndex] = temp1[1];
 		playerRowIndex++;
-	i++;
-	}
+	{
+	
+	
 
 	if(arr[i] == 'o'){
 		cpuRow[cpuRowIndex] = temp1[1];			
@@ -39,7 +40,8 @@ int playerRowIndex = 0, playerColIndex = 0,cpuColIndex=0 ,cpuRowIndex=0, col_Ind
 	else {
 		col_index = (i+1)/4;
 	}
-
+	
+	i++;
 	}
 	
 	/***********************************************stupid diagonal case***********************************************/
