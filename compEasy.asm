@@ -1,11 +1,11 @@
-	extern printBoard
+	extern drawBoard
 	extern randomNum
 	extern askLocation
 	extern checkWinner
 	
         section .data
 	
-array:	  TIMES 16 db 32
+array:	 db "                "
 
 false:		equ 0
 true:		equ 1
@@ -13,19 +13,23 @@ winner:	 db 	false
         section .bss
 	
 	section .text
-	global play_easy
+	global compEasy
         
         
-play_easy:
+compEasy:
 	;; parameters goes as follow: (rdi,rsi,rdx,rcx,r8,r9)
 	;; rax value is returned
 
 	;; printBoard(array)
-        mov rdi,[array]
+	xor r10,r10
+	xor rdi,rdi
 	
-        call printBoard
+        mov rdi,array
+	
+        call drawBoard
 
 	;; askLocation()
+	mov rdi,array
         call askLocation
 	xor rbx,rbx
 	mov rbx,rax 		;return value from ask location
@@ -37,7 +41,7 @@ play_easy:
 	dec rbx
 	
 	add r10,rbx		;pointing to position in array
-	mov r10,120		;r10='x'
+	mov byte[r10],120		;r10='x'
 
 	;; cpu's location is set
 	call randomNum
@@ -48,7 +52,7 @@ play_easy:
 
 	mov r10,array
 	add r10,rbx
-	mov r10,111		;r10='o'
+	mov byte[r10],111		;r10='o'
 
 	mov rdi,[array]		;setting first parameter in check winner to array
 
@@ -57,7 +61,7 @@ play_easy:
 	mov [winner],al
 
 	cmp byte[winner],1
-	jne play_easy		;while !winner
+	jne compEasy		;while !winner
 
 	xor rax,rax		
 	ret

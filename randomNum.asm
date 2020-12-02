@@ -31,6 +31,7 @@ randomNum:
 	div rbx
 	
 	mov r8,rsi		; max val
+	inc r8
 
 	xor rdx,rdx
 	div r8			; (random_seed / 65536) % (max + 1)

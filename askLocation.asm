@@ -22,6 +22,7 @@ askLocation:
 	
 	xor r10,r10
 	mov r10,rdi 		;place array into register
+	
 	;; print(loc_prompt)  
 	mov rdi,fmt
 	mov rsi,loc_prompt
@@ -33,9 +34,9 @@ askLocation:
 	mov rsi,location
 	mov rax,0
 
-	push rbp
+	
 	call scanf
-	pop rbp
+	
 
 	;; rbx = location
 	xor rbx,rbx
@@ -50,9 +51,12 @@ askLocation:
 	;; (location > 16)? repeat : continue
 	cmp bl,16
 	jg repeat
+	
 	;; locate spot 
-	add r10b,bl
-	cmp r10b,32		;check if space is occupied
+	add r10,[location]
+	mov r11b, byte[r10]
+
+	cmp r11b,0
 	jne occupied
 	
 	;; return location

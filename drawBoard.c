@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-void printTble (char x[16]){
+void drawBoard (char x[16]){
   const char DASH = '-';
   const int MAX_RW = 4,
     MAX_ELM = 16, MAX_DSH = 14;
