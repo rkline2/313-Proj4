@@ -89,15 +89,17 @@ done2:
 	;;  if(arr[col_Index] == 'x')
 	xor r13,r13
 	mov r13,array
-	add r13,[col_Index]
+	add r13b,byte[col_Index]
 	
-	cmp word[r13],120
+	cmp byte[r13],120
 	jne done3
 	
 	xor r13,r13
+	xor r15,r15
 	
 	mov r13,playerCol	; playerCol[playerColIndex] = temp2[2]
-	add r13,[playerColIndex] ; playerColIndex++
+	mov r15b,byte[playerColIndex]
+	add r13,r15  ; playerColIndex++
 	xor r14,r14
 	
 	mov r14,r11		;r11 = temp2
@@ -113,9 +115,9 @@ done3:
 	;;   if(arr[col_Index] == '0')
 	xor r13,r13
 	mov r13,array
-	add r13,[col_Index]
+	add r13b,byte[col_Index]
 
-	cmp word[r13],111
+	cmp byte[r13],111
 	jne done4
 
 	xor r13,r13
