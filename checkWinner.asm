@@ -13,6 +13,7 @@ cpuColIndex:	resb 2
 cpuRowIndex:	resb 2
 col_Index:	resb 2
 coordinates:	resb 2
+array:		resb 16
 	
 	section .text
 	global checkWinner
@@ -21,7 +22,7 @@ checkWinner:
 	;; parameters: (rdi,rsi,rdx,rcx,r8,r9)
 	;; rdi = array, rsi = num_moves
 	;; rax value is returned
-	
+	mov [array],rax
 	mov word[playerRowIndex],0
 	mov word[playerColIndex],0
 	mov word[cpuColIndex],0
@@ -36,7 +37,7 @@ while:
 	jge done6
 
 	mov r12,array
-	add r12,ax
+	add r12w,ax
 
 	;; storing current position of i
 	mov r13,rax
@@ -59,13 +60,13 @@ while:
 	xor r13,r13
 	
 	;; if(arr[i] == 'x')
-	cmp [r12],120
+	cmp r12,120 		;error if dereference r12
 	jne done1
 
 	mov r13,playerRow	  ; playerRow[playerRowIndex] = temp1[1]
 	add r13,[playerRowIndex]  ; playerRowIndex++
-	mov [r13],byte[r10]		
-	inc playerRowIndex
+	mov [r13],r10b		
+	add  byte[playerRowIndex],1
 	
 	jmp done1
 
@@ -74,13 +75,13 @@ while:
 
 done1:
 	;; if(arr[i] == 'o')
-	cmp [r12],111
+	cmp r12,111 		;error if compare and dereference r12
 	jne done2
 
 	mov r13,cpuRow	 	; cpuRow[cpuRowIndex] = temp1[1]
 	add r13,[cpuRowIndex] ; cpuRowIndex++
-	mov [r13],byte[r10]
-	inc cpuRowIndex
+	mov [r13],r10b
+	inc byte[cpuRowIndex]
 
 	jmp done2
 
@@ -90,7 +91,7 @@ done2:
 	mov r13,array
 	add r13,[col_Index]
 	
-	cmp [r13],120
+	cmp word[r13],120
 	jne done3
 	
 	xor r13,r13
@@ -102,8 +103,8 @@ done2:
 	mov r14,r11		;r11 = temp2
 	inc r14
 	
-	mov [r13],byte[r14]
-	inc playerColIndex
+	mov [r13],r14b
+	inc byte[playerColIndex]
 	xor r14,r14
 	
 	jmp done3
@@ -114,7 +115,7 @@ done3:
 	mov r13,array
 	add r13,[col_Index]
 
-	cmp [r13],111
+	cmp word[r13],111
 	jne done4
 
 	xor r13,r13
@@ -126,8 +127,8 @@ done3:
 	mov r14,r11		;r11 = temp2
 	inc r14
 
-	mov [r13],byte[r14]
-	inc cpuColIndex
+	mov [r13],r14b
+	inc byte[cpuColIndex]
 	xor r14,r14
 
 	jmp done4
@@ -138,15 +139,16 @@ done4:
 	
 	mov r13,rax
 
-	mov rax,[col_index]
-	div 4
+	mov rax,[col_Index]
+	mov r14,4
+	div r14
 	inc rax
 	
 	cmp ax,4
 	je else
-	add [col_index],4
+	add byte[col_Index],4
 
-	move rax,r13		; rax = i
+	mov rax,r13		; rax = i
 	jmp done5
 
 else:				; else{ col_index = (i+1)/4; }
@@ -155,8 +157,9 @@ else:				; else{ col_index = (i+1)/4; }
 	xor rdx,rdx
 	inc rax			; rax = i + 1
 
-	div 4
-	mov [col_index],rx
+	mov r14,4
+	div r14
+	mov [col_Index],ax
 	
 	mov rax,r13		; rax = i
 
@@ -176,7 +179,8 @@ getcoord:
 	inc rdi
 	mov rax,rdi
 	xor rdx,rdx
-	div 4
+	mov r14,4
+	div r14
 	;; r13 = col
 	mov r13,rdx
 	
@@ -187,7 +191,7 @@ getcoord:
 	mov r11,r13
 	xor r9,r9
 	mov r9,coordinates
-	mov byte[coordinates],r10
+	mov byte[coordinates],r10b
 	inc r9
 	mov [r9],r11
 	jmp exit
@@ -198,9 +202,9 @@ else1:
 	mov r13,rax
 	xor r9,r9
 	mov r9,coordinates
-	mov byte[coordinates],r13
+	mov byte[coordinates],r13b
 	inc r9
-	mov[r9],4
+	mov byte[r9],4
 	
 	jmp exit
 	
