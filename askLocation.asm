@@ -11,7 +11,7 @@ fmt:		db "%s",10,0
 fmt_scan:	db "%d",0
 
 	section .bss
-location:	resq 3
+location:	resq 2
 	section .text
 	global askLocation
 askLocation:
@@ -53,10 +53,11 @@ askLocation:
 	jg repeat
 	
 	;; locate spot 
-	add r10,[location]
-	mov r11b, byte[r10]
+	dec bl
+	add r10b,bl
+	
 
-	cmp r11b,0
+	cmp byte[r10],0
 	jne occupied
 	
 	;; return location
