@@ -5,22 +5,27 @@
 loc_prompt:     db "Enter a location on the board 1-16",0
 err:		db "Invalid Input!",0
 space_occupied:	db "This is not an empty space. Try again!",0
-	
+
+
 len_p:          equ $-loc_prompt
 fmt:		db "%s",10,0
 fmt_scan:	db "%d",0
 
 	section .bss
-location:	resq 2
-test:		resb 1
+location:	resb 2
+test:		resq 1
 
 	section .text
 	global askLocation
 askLocation:
+	xor r15,r15
+	mov r15,rdi
+	mov byte[location],0
+	jmp getLocation
+	
+getLocation:
 	;; parameters go as follow: rdi,rsi,rdx,rcx,r8,r9
 	;; rax value is returned
-	xor r15,r15
-	mov r15,rdi 		;point to array
 	
 	push rbp
 	mov rbp,rsp
@@ -35,40 +40,46 @@ askLocation:
 	mov rdi,fmt_scan
 	mov rsi,location
 	mov rax,0
-
 	
 	call scanf
-	
 
 	pop rbp
+	
 	;; rbx = location
-	xor rbx,rbx
-	mov bl,byte[location]
-	dec bl
-
+	dec byte[location]
+	
+	xor r12,r12
+	mov r12,[location]
 
 	;; (location < 0)? repeat : continue
-	cmp bl,0
+	cmp r12b,0
 	jl repeat
 
 	;; (location > 15)? repeat : continue
-	cmp bl,15
+	cmp r12b,15
 	jg repeat
 
-	xor r10,r10		;error here
+	xor r10,r10	
 	mov r10,r15	;point to array
 	
 	;; locate spot 
-	add r10b,bl
+	add r10b,r12b
 	
-		;cmp byte[r10],32
-		;jne occupied
+	cmp byte[r10],111	;arr[askLocation] == 'x'
+	je occupied
+
+	cmp byte[r10],120
+	je occupied
+
 	
 	mov byte[r10],120
 		
 	ret
 	
 repeat:
+	xor r12,r12
+	xor r10,r10
+	
 	;; repeats invalid input 
 	push rbp
 	mov rdi,fmt
@@ -78,9 +89,12 @@ repeat:
 	call printf
 
 	pop rbp
-	jmp askLocation
+	jmp getLocation
 	
 occupied:
+	xor r12,r12
+	xor r10,r10
+	
 	;; requests location again if space already occupied
 	push rbp
 	mov rdi,fmt
@@ -90,4 +104,5 @@ occupied:
 	call printf
 	
 	pop rbp
-	jmp askLocation
+	
+	jmp getLocation
