@@ -20,7 +20,7 @@ test:		resq 1
 askLocation:
 	xor r15,r15
 	mov r15,rdi
-	mov byte[location],0
+	
 	jmp getLocation
 	
 getLocation:
