@@ -1,3 +1,4 @@
+	extern printf
 	extern drawBoard
 	extern randomNum
 	extern askLocation
@@ -5,13 +6,19 @@
 	
         section .data
 	
-array:	 db "                "
+array:		db "                "
 
+test:		db "test",0
+	
 false:		equ 0
 true:		equ 1
-winner:	 db 	false
-        section .bss
+winner:		db false
 	
+fmt:		db "%s",10,0
+        section .bss
+
+test1:		resb 2
+numMoves:	resq 1
 	section .text
 	global compEasy
         
@@ -21,52 +28,44 @@ compEasy:
 	;; rax value is returned
 
 	;; printBoard(array)
-	xor r10,r10
 	xor rdi,rdi
 	
         mov rdi,array
 	
         call drawBoard
 
-	;; askLocation()
+	;; askLocation(array)
+	xor rdi,rdi
 	mov rdi,array
         call askLocation
-	xor rbx,rbx
-	mov rbx,rax 		;return value from ask location
-
-	;; player's location is set  
-	xor r10,r10		;char pointer to beg. of array
-	mov r10,array
 	
-	dec rbx
-	
-	add r10,rbx		;pointing to position in array
-	mov byte[r10],120		;r10='x'
+	inc byte[numMoves]
 
 	;; cpu's location is set
+	xor rdi,rdi
+	xor rsi,rsi
+	
+	mov rdi,16
+	mov rsi,array
 	call randomNum
+
 	
-	xor rbx,rbx
-	mov rbx,rax		;rtn value from randomNum
-	xor r10,r10
+	;mov rdi,array ;setting first parameter in check winner to array
 
-	mov r10,array
-	add r10,rbx
-	mov byte[r10],111		;r10='o'
-
-	mov rdi,[array]		;setting first parameter in check winner to array
-
-	call checkWinner
+	inc byte[numMoves]
+	; call checkWinner
 	
-	mov [winner],al
+	; mov [winner],al
 
-	cmp byte[winner],1
-	jne compEasy		;while !winner
-
+	; cmp byte[winner],2
+	; jne compEasy
+	
+	cmp byte[numMoves],16
+	jle compEasy
 	xor rax,rax		
 	ret
 	;; not finished yet, need to determine who wins,0-no winner 1-almost winner
-	;; 2-player wins 3- comp wins 4-tie/board filled, keep track of moves made <= 16
+	;; 2-player wins 3-comp wins 4-tie/board filled, keep track of moves made <= 16
 	
 	
 	

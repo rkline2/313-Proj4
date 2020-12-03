@@ -9,19 +9,19 @@ space_occupied:	db "This is not an empty space. Try again!",0
 len_p:          equ $-loc_prompt
 fmt:		db "%s",10,0
 fmt_scan:	db "%d",0
-
+array:		db "                "
 	section .bss
 location:	resq 2
+test:		resb 1
 	section .text
 	global askLocation
 askLocation:
 	;; parameters go as follow: rdi,rsi,rdx,rcx,r8,r9
 	;; rax value is returned
+	mov word[array],di
+	
 	push rbp
 	mov rbp,rsp
-	
-	xor r10,r10
-	mov r10,rdi 		;place array into register
 	
 	;; print(loc_prompt)  
 	mov rdi,fmt
@@ -38,30 +38,32 @@ askLocation:
 	call scanf
 	
 
+	pop rbp
 	;; rbx = location
 	xor rbx,rbx
-	mov bl,[location]
+	mov bl,byte[location]
+	dec bl
 
-	pop rbp
 
-	;; (location < 1)? repeat : continue
-	cmp bl,1
+	;; (location < 0)? repeat : continue
+	cmp bl,0
 	jl repeat
 
-	;; (location > 16)? repeat : continue
-	cmp bl,16
+	;; (location > 15)? repeat : continue
+	cmp bl,15
 	jg repeat
+
+	xor r10,r10		;error here
+	mov r10,array	;point into array
 	
 	;; locate spot 
-	dec bl
 	add r10b,bl
 	
-
-	cmp byte[r10],0
-	jne occupied
+	;cmp byte[r10],32
+	;;jne occupied 
 	
-	;; return location
-	mov al,[location]
+	mov byte[r10],120
+		
 	ret
 	
 repeat:
@@ -72,7 +74,7 @@ repeat:
 	mov rax,0
 	
 	call printf
-	
+
 	pop rbp
 	jmp askLocation
 	

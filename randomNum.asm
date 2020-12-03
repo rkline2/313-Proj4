@@ -7,14 +7,19 @@ num_b:		resb	2
 	global randomNum 
 randomNum:
 	;; parameters goes as follow: rdi,rsi,rdx,rcx,r8,r9
-	;; rdi = int seed ; rsi = int max
+	;; rdi = int max, rsi = array, rdx = seed
 	xor r8,r8 		; r8 = random_seed
-	xor r9,r9
+	xor r9,r9		; r9 = seed
+	xor r11,r11
+	xor r12,r12
+	
 	xor rdx,rdx
 	xor rax,rax
 	
+	RDRAND r9
+	mov r8,0
+	
 	mov rax,1103515245
-	mov r9,rdi
 	
 	add r8,r9		; random_seed + seed
 	mul r8			; r8(random_seed + seed) * rax(1103515245)
@@ -27,16 +32,30 @@ randomNum:
 	xor rbx,rbx
 	
 	mov rax,r8
-	mov rbx,65536		; random_seed / 65536
+	mov rbx,65536		; rax = random_seed / 65536
 	div rbx
 	
-	mov r8,rsi		; max val
+	mov r8,rdi		; max val + 1
 	inc r8
 
 	xor rdx,rdx
-	div r8			; (random_seed / 65536) % (max + 1)
+	div r8			; (random_seed / 65536) % (max + 1) value is in rdx
 
-	mov rax,rdx		; value gets returned
-				; Optional: convert to ascii before returning value  
+	xor r12,r12
+	mov r12,rdx
+	dec r12
+	
+	mov r11,rsi		; r11 -> array
+
+	add r11b,r12b
+	
+	cmp byte[r11],32		;~cmp byte[r11],0; is array[randNum] == NULL?
+	je  exit
+	jmp randomNum		
+		
+
+exit:	
+	mov byte[r11],111
+			; value gets returned  
 	ret
 

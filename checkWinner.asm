@@ -1,9 +1,8 @@
-	section .data
-	
-playerRow:	TIMES 16 db 0
-playerCol:	TIMES 16 db 0
-cpuRow:		TIMES 16 db 0
-cpuCol:		TIMES 16 db 0
+	section .data		
+playerRow:		TIMES 16 db 0
+playerCol:		TIMES 16 db 0
+cpuRow:			TIMES 16 db 0
+cpuCol:			TIMES 16 db 0
 
 	section .bss
 ;; variables 
@@ -13,7 +12,9 @@ cpuColIndex:	resb 2
 cpuRowIndex:	resb 2
 col_Index:	resb 2
 coordinates:	resb 2
+
 array:		resb 16
+	
 	
 	section .text
 	global checkWinner
@@ -22,34 +23,42 @@ checkWinner:
 	;; parameters: (rdi,rsi,rdx,rcx,r8,r9)
 	;; rdi = array, rsi = num_moves
 	;; rax value is returned
-	mov [array],rax
-	mov word[playerRowIndex],0
-	mov word[playerColIndex],0
-	mov word[cpuColIndex],0
-	mov word[col_Index],0
+	mov word[array],di
+	mov byte[playerRowIndex],0
+	mov byte[playerColIndex],0
+	mov byte[cpuColIndex],0
+	mov byte[col_Index],0
 	mov rax,0
+	
 	jmp while
 
 ;; r10 = temp1, r11 = temp2, *r12 -> arr[i], rax = i
 while:
 	;; while (ax < 16)
-	cmp ax,16
+	cmp al,16
 	jge done6
 
 	mov r12,array
-	add r12w,ax
+	add r12b,al
 
 	;; storing current position of i
-	mov r13,rax
+	xor r13,r13
+	mov r13b,al
 
-	;; temp1 = getcoord(arr[i]) 
-	mov rdi,[r12]
+	;; temp1 = getcoord(i)
+	xor rdi,rdi
+	mov dil,al
 	call getcoord
+	
+	xor r10,r10
 	mov r10,rax
 
-	;; temp2 = getcoord(arr[col_Index])
-	mov rdi,[col_Index]
+	;; temp2 = getcoord(col_Index)
+	xor rdi,rdi
+	mov dil,byte[col_Index]
 	call getcoord
+	
+	xor r11,r11
 	mov r11,rax
 
 	;; rax = i
@@ -63,10 +72,10 @@ while:
 	cmp r12,120 		;error if dereference r12
 	jne done1
 
-	mov r13,playerRow	  ; playerRow[playerRowIndex] = temp1[1]
-	add r13,[playerRowIndex]  ; playerRowIndex++
-	mov [r13],r10b		
-	add  byte[playerRowIndex],1
+	mov r13,playerRow	       ; playerRow[playerRowIndex] = temp1[1]
+	add r13b,byte[playerRowIndex]  ; playerRowIndex++
+	mov byte[r13],r10b		
+	add byte[playerRowIndex],1
 	
 	jmp done1
 
@@ -75,13 +84,18 @@ while:
 
 done1:
 	;; if(arr[i] == 'o')
-	cmp r12,111 		;error if compare and dereference r12
+	cmp byte[r12],111 		;error if compare and dereference r12
 	jne done2
 
-	mov r13,cpuRow	 	; cpuRow[cpuRowIndex] = temp1[1]
-	add r13,[cpuRowIndex] ; cpuRowIndex++
-	mov [r13],r10b
+	xor r13,r13
+	mov r13,cpuRow	 	   ; cpuRow[cpuRowIndex] = temp1[1]
+	add r13b,byte[cpuRowIndex] ; cpuRowIndex++
+
+	mov r14,r10
+	
+	mov byte[r13],r14b
 	inc byte[cpuRowIndex]
+	xor r14,r14
 
 	jmp done2
 
@@ -97,15 +111,14 @@ done2:
 	xor r13,r13
 	xor r15,r15
 	
-	mov r13,playerCol	; playerCol[playerColIndex] = temp2[2]
-	mov r15b,byte[playerColIndex]
-	add r13,r15  ; playerColIndex++
+	mov r13,playerCol		; playerCol[playerColIndex] = temp2[2]
+	add r13b,byte[playerColIndex]   ; playerColIndex++
 	xor r14,r14
 	
 	mov r14,r11		;r11 = temp2
 	inc r14
 	
-	mov [r13],r14b
+	mov byte[r13],r14b
 	inc byte[playerColIndex]
 	xor r14,r14
 	
@@ -123,13 +136,13 @@ done3:
 	xor r13,r13
 
 	mov r13,cpuCol 	; cpuCol[cpuColIndex] = temp2[2]
-	add r13,[cpuColIndex] ; cpuColIndex++
+	add r13b,byte[cpuColIndex] ; cpuColIndex++
 	xor r14,r14
 
 	mov r14,r11		;r11 = temp2
 	inc r14
 
-	mov [r13],r14b
+	mov byte[r13],r14b
 	inc byte[cpuColIndex]
 	xor r14,r14
 
@@ -138,34 +151,40 @@ done3:
 done4:
 	xor rdx,rdx		; if((col_index / 4) + 1 != 4){ col_index +=4; }
 	xor r13,r13
-	
-	mov r13,rax
 
-	mov rax,[col_Index]
-	mov r14,4
-	div r14
-	inc rax
+	mov r13w,ax
+	mov ax,word[col_Index]
 	
-	cmp ax,4
+	mov r14w,4
+	div r14w
+	inc ax
+	
+	mov r14w,ax
+			;rax = i
+	cmp r14w,4
 	je else
-	add byte[col_Index],4
 
-	mov rax,r13		; rax = i
+	xor rax,rax
+	mov ax,r13w
+	add byte[col_Index],4
 	jmp done5
 
-else:				; else{ col_index = (i+1)/4; }
-	mov r13,rax		; r13 = i
-	
+else:
+	xor rax,rax		; else{ col_index = (i+1)/4; }
+	mov ax,r13w		; r13 = i
+	mov r13w,ax
+
 	xor rdx,rdx
 	inc rax			; rax = i + 1
 
-	mov r14,4
-	div r14
-	mov [col_Index],ax
+	mov r14w,4
+	div r14w
 	
-	mov rax,r13		; rax = i
+	mov word[col_Index],ax
 
-	
+	xor rax,rax
+	mov ax,r13w		; rax = i
+
 	jmp done5
 	
 done5:	
