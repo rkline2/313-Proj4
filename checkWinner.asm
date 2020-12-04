@@ -12,8 +12,6 @@ cpuColIndex:	resb 2
 cpuRowIndex:	resb 2
 col_Index:	resb 2
 coordinates:	resb 2
-
-array:		resb 16
 	
 	
 	section .text
@@ -23,31 +21,33 @@ checkWinner:
 	;; parameters: (rdi,rsi,rdx,rcx,r8,r9)
 	;; rdi = array, rsi = num_moves
 	;; rax value is returned
-	mov word[array],di
+	xor r15,r15
+	mov r15,rdi 		;added r15 to point to array
 	mov byte[playerRowIndex],0
 	mov byte[playerColIndex],0
 	mov byte[cpuColIndex],0
 	mov byte[col_Index],0
-	mov rax,0
+	mov rax,0 		;sets i outside loop ?
 	
 	jmp while
+	
 
 ;; r10 = temp1, r11 = temp2, *r12 -> arr[i], rax = i
 while:
 	;; while (ax < 16)
-	cmp al,16
+	cmp al,16 		;while ax or al?
 	jge done6
 
-	mov r12,array
+	mov r12,r15
 	add r12b,al
 
 	;; storing current position of i
-	xor r13,r13
+	xor r13,r13		;should be inside loop?
 	mov r13b,al
 
 	;; temp1 = getcoord(i)
 	xor rdi,rdi
-	mov dil,al
+	mov dil,al		;should we be using dil?
 	call getcoord
 	
 	xor r10,r10
@@ -59,7 +59,7 @@ while:
 	call getcoord
 	
 	xor r11,r11
-	mov r11,rax
+	mov r11,rax		;return value from getCoord()
 
 	;; rax = i
 	xor rax,rax
@@ -69,7 +69,7 @@ while:
 	xor r13,r13
 	
 	;; if(arr[i] == 'x')
-	cmp r12,120 		;error if dereference r12
+	cmp byte[r12],120 		
 	jne done1
 
 	mov r13,playerRow	       ; playerRow[playerRowIndex] = temp1[1]
@@ -84,7 +84,7 @@ while:
 
 done1:
 	;; if(arr[i] == 'o')
-	cmp byte[r12],111 		;error if compare and dereference r12
+	cmp byte[r12],111 
 	jne done2
 
 	xor r13,r13
