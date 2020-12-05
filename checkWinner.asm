@@ -1,8 +1,8 @@
 	section .data		
-playerRow:		TIMES 16 db 0
-playerCol:		TIMES 16 db 0
-cpuRow:			TIMES 16 db 0
-cpuCol:			TIMES 16 db 0
+playerRow:		db "                "
+playerCol:		db "                "
+cpuRow:			db "                "
+cpuCol:			db "                "
 
 	section .bss
 ;; variables 
@@ -32,6 +32,9 @@ max_cpu_dup:	resb 2
 player_dup:	resb 2
 cpu_dup:	resb 2
 
+num_o_1:	resb 2
+num_o_2:	resb 2
+	
 max:		resb 2
 max1:		resb 2
 max2:		resb 2
@@ -256,10 +259,10 @@ diag1:
 	mov r12,r15
 	add r12b,byte[int_i]
 
-	comp byte[r12],120
+	cmp byte[r12],120
 	je inc_num_x1
 	
-	comp byte[r12],111
+	cmp byte[r12],111
 	je inc_num_o1
 	
 	jmp inc_diag1
@@ -293,10 +296,10 @@ diag2:
 	mov r12,r15
 	add r12b,byte[int_i]
 
-	comp byte[r12],120
+	cmp byte[r12],120
 	je inc_num_x2
 
-	comp byte[r12],111
+	cmp byte[r12],111
 	je inc_num_o2
 
 	jmp inc_diag2
@@ -314,32 +317,47 @@ inc_diag2:
 	jmp diag2
 
 	;; stupid diag cases are done
+	;; r10 & r11 are free registers
 exit_diag2:
 	mov byte[max_pl_dup],0
 	mov byte[max_cpu_dup],0
+
+	xor r10,r10
+	xor r11,r11
+
+	mov r10,[num_x_1]
+	mov r11,[num_x_2]
 	
-	cmp byte[num_x_1], byte[num_x_2]
+	cmp r10b,r11b
 	jg max_is_num_x_1
 
-	mov byte[max_pl_dup], byte[num_x_2]
+	mov byte[max_pl_dup],r11b
 	jmp find_max_cpu_dup
 	
 max_is_num_x_1:
-	mov byte[max_pl_dup], byte[num_x_1]
+	mov byte[max_pl_dup],r10b
 	jmp find_max_cpu_dup
 	
 find_max_cpu_dup:
-	cmp byte[num_o_1], byte[num_o_2]
+	xor r10,r10
+	xor r11,r11
+
+	mov r10,[num_o_1]
+	mov r11,[num_o_2]
+	
+	cmp r10b,r11b
 	jg max_is_num_o_1
 
-	mov byte[max_cpu_dup], byte[num_o_2]
+	mov byte[max_cpu_dup],r11b
 	jmp find_player_dup
 
 max_is_num_o_1:
-	mov byte[max_cpu_dup], byte[num_o_1]
+	mov byte[max_cpu_dup],r10b
 	jmp find_player_dup
 
 find_player_dup:
+	xor r10,r10
+	xor r11,r11
 	xor r12,r12
 	xor r13,r13
 
@@ -470,7 +488,10 @@ FindMaxDup:
 	inc r15
 	
 	mov r13,r11			;r13 = row[0]
-	mov byte[last],byte[r13] 	;last = row[0]
+	xor r10,r10
+	mov r10,[r13]
+	
+	mov byte[last],r10b 		;last = row[0] weird error happened here is r13 a ptr? 
 	
 	mov byte[max],0
 	mov byte[max1],0
@@ -481,26 +502,36 @@ FindMaxDup:
 	jmp MaxRow
 
 MaxRow:
-	cmp byte[int_i],r14
-	jge rowComp
+	cmp byte[int_i],r14b
+	jge row_Comp
 
+	xor r10,r10
 	xor r13,r13
+	
 	mov r13,r11		;r11 = row[]
 	
 	add r13b,byte[int_i]
-
-	cmp byte[r13],byte[last] ;if(row[i] == last)
+	
+	mov r10b,byte[r13]
+	cmp r10b,byte[last] ;if(row[i] == last)
 	
 	jne row_else
 	
 	inc byte[currNumDupes]
 
 	jmp MaxRowExit
-	
+
+	;; r9 & r8 are free registers
 row_else:
-	cmp byte[max1],byte[currNumDupes]
+	xor r9,r9
+	xor r8,r8
+	
+	mov r9,[max1]
+	mov r8,[currNumDupes]
+	
+	cmp r9b,r8b
 	jg row_else2
-	mov byte[max1],byte[currNumDupes]
+	mov byte[max1],r8b
 	
 	mov byte[currNumDupes],1
 	jmp MaxRowExit
@@ -510,44 +541,67 @@ row_else2:
 	jmp MaxRowExit
 
 MaxRowExit:
-	mov byte[last],byte[r13] ; last = row[i]
+	xor r10,r10
+	mov r10b,byte[r13]
+	mov byte[last],r10b ; last = row[i]
+
 	inc byte[int_i]
+	jmp MaxRow
 
 row_Comp:
-	cmp byte[max1], byte[currNumDupes]
+	xor r9,r9
+	xor r8,r8
+	
+	mov r9,[max1]
+	mov r8,[currNumDupes]
+	
+	cmp r9b,r8b
 	jg MaxCol
 
-	mov byte[max1],byte[currNumDupes]
+	mov byte[max1],r8b
 	jmp MaxCol
 	
 
 MaxCol:				;r12 = col[]
 	mov byte[max2],0
 
+	xor r10,r10
 	xor r13,r13
-	mov r13,col		;r13 = col[i]
+	mov r13,r12		;r13 = col[i]
 	
-	mov byte[last],byte[r13] ;last = col[0]
+	mov r10,[r13]
+	
+	mov byte[last],r10b ;last = col[0]
 
 	mov byte[currNumDupes],1
 	mov byte[int_i],1
 	jmp MaxColLoop
 	
 MaxColLoop:
-	cmp byte[int_i],r15
+	cmp byte[int_i],r15b
 	jge ExitColLoop
 
-	add r13,byte[int_i]
-	cmp byte[r13],byte[last] ;if (col[i] == last)
+	add r13b,byte[int_i]
+	
+	xor r10,r10
+	mov r10b,byte[r13]
+	
+	cmp r10b,byte[last] ;if (col[i] == last)
 	jne col_else
 
 	inc byte[currNumDupes]
 	jmp MaxColExit
 
 col_else:
-	cmp byte[max2],byte[currNumDupes]
+	xor r9,r9
+	xor r8,r8
+	
+	mov r9,[max2]
+	mov r8,[currNumDupes]
+	
+	cmp r9b,r8b
 	jg col_else2
-	mov byte[max2],byte[currNumDupes]
+	mov byte[max2],r8b
 	
 	mov byte[currNumDupes],1
 	jmp MaxColExit
@@ -558,25 +612,39 @@ col_else2:
 	
 	
 MaxColExit:
-	mov byte[last],byte[r13]
-	inc [int_i]
+	xor r10,r10
+	mov r10b,byte[r13]
+	
+	mov byte[last],r10b
+	inc byte[int_i]
 	
 	jmp MaxColLoop
 
 ExitColLoop:
-	cmp byte[max2],byte[currNumDupes]
+	xor r9,r9
+	xor r8,r8
+
+	mov r9,[max2]
+	mov r8,[currNumDupes]
+	
+	cmp r9b,r8b
 	jg col_else3
-	mov byte[max2],byte[currNumDupes]
+	mov byte[max2],r8b
 	jmp col_else3
 	
 col_else3:
-	cmp byte[max1],byte[max2]
+	xor r9,r9
+	xor r8,r8
+	mov r9,[max1]
+	mov r8,[max2]
+	
+	cmp r9b,r8b
 	jg Max1IsSupreme
-	mov byte[max],byte[max2]
+	mov byte[max],r8b
 	jmp ExitDaMaxDup
 
 Max1IsSupreme:
-	mov byte[max],byte[max1]
+	mov byte[max],r9b
 	jmp ExitDaMaxDup
 
 ExitDaMaxDup:
