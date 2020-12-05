@@ -24,6 +24,8 @@ num_x_2:	resb 2
 num_y_1:	resb 2
 num_y_2:	resb 2
 
+num_moves:	resb 2
+
 max_pl_dup:	resb 2
 max_cpu_dup:	resb 2
 
@@ -46,6 +48,11 @@ checkWinner:
 	;; rax value is returned
 	xor r15,r15
 	mov r15,rdi 		;added r15 to point to array
+
+	xor r10,r10
+	mov r10,rsi
+	mov byte[num_moves],r10b
+	xor r10,r10
 
 	;; int all Indexes = 0 
 	mov byte[playerRowIndex],0
@@ -366,10 +373,56 @@ find_player_dup:
 
 	xor r12,r12
 	xor r13,r13
+	xor rax,rax
+	
+	;; player returns
+	cmp byte[player_dup],4
+	je return_2
+	
+	cmp byte[player_dup],3
+	je return_1
+	
+	cmp byte[max_pl_dup],4
+	je return_2
+	
+	cmp byte[max_pl_dup],3
+	je return_1
 
+	;; cpu returns
+	cmp byte[cpu_dup],4
+	je return_3
 	
+	cmp byte[cpu_dup],3
+	je return_1
 	
+	cmp byte[max_cpu_dup],4
+	je return_3
 	
+	cmp byte[max_cpu_dup],3
+	je return_1
+
+	cmp byte[num_moves],16
+	je return_4
+
+	mov rax,0
+	ret
+
+return_1:
+	mov rax,1
+	ret
+
+return_2:
+	mov rax,2
+	ret
+
+return_3:
+	mov rax,3
+	ret
+
+return_4:	
+	mov rax,4
+	ret
+
 getcoord:
 	;; rdi = index number, r13 = col
 	xor r10,r10		;r10 = row
