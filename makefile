@@ -1,4 +1,4 @@
-OBJS = askLocation.o compEasy.o drawBoard.o randomNum.o test2_main.o
+OBJS = askLocation.o compEasy.o drawBoard.o randomNum.o test2_main.o checkWinner.o
 ASSFLAGS = nasm -f elf64
 CXX = gcc -m64
 
@@ -17,6 +17,9 @@ drawBoard.o: drawBoard.c
 
 randomNum.o: randomNum.asm
 	$(ASSFLAGS) randomNum.asm
+
+checkWinner.o: checkWinner.asm
+	$(ASSFLAGS) checkWinner.asm
 
 test2_main.o: test2_main.asm
 	$(ASSFLAGS) test2_main.asm

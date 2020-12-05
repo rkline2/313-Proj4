@@ -53,9 +53,9 @@ compEasy:
 	;mov rdi,array ;setting first parameter in check winner to array
 
 	inc byte[numMoves]
-	; call checkWinner
+	call checkWinner
 	
-	; mov [winner],al
+	mov [winner],al
 
 	; cmp byte[winner],2
 	; jne compEasy
