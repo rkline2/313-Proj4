@@ -9,6 +9,7 @@
 array:		db "                "
 
 test:		db "test",0
+print:	       db "test fun"
 	
 false:		equ 0
 true:		equ 1
@@ -26,7 +27,7 @@ numMoves:	resq 1
 compEasy:
 	;; parameters goes as follow: (rdi,rsi,rdx,rcx,r8,r9)
 	;; rax value is returned
-
+	
 	;; printBoard(array)
 	xor rdi,rdi
 	
@@ -53,22 +54,39 @@ compEasy:
 	;mov rdi,array ;setting first parameter in check winner to array
 
 	inc byte[numMoves]
+	
+	mov rdi,array
+	mov rsi,numMoves
 	call checkWinner
 	
-	mov [winner],al
-
 	; cmp byte[winner],2
+
 	; jne compEasy
+
 	
 	cmp byte[numMoves],16
 	jle compEasy
-	xor rax,rax		
+	cmp byte[numMoves],16
+	je print1
+	xor rax,rax
+	
 	ret
 	;; not finished yet, need to determine who wins,0-no winner 1-almost winner
 	;; 2-player wins 3-comp wins 4-tie/board filled, keep track of moves made <= 16
 	
+testing:
+	mov rax,1
+	mov rdi,1
+	mov rsi,print
+	mov rdx,1
+	ret
 	
-	
+print1:
+	mov rax,1
+	mov rdi,1
+	mov rsi,[numMoves]
+	mov rdx,1
+	syscall
 	
 
 

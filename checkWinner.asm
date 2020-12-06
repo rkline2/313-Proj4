@@ -44,7 +44,7 @@ currNumDupes:	resb 2
 last:		resb 2
 	section .text
 	global checkWinner
-	
+	;; add in push & pop
 checkWinner:
 	;; parameters: (rdi,rsi,rdx,rcx,r8,r9)
 	;; rdi = array, rsi = num_moves
@@ -61,6 +61,7 @@ checkWinner:
 	mov byte[playerRowIndex],0
 	mov byte[playerColIndex],0
 	mov byte[cpuColIndex],0
+	mov byte[cpuRowIndex],0	;added this in 
 	mov byte[col_Index],0
 
 	mov byte[coordinates],0
@@ -75,52 +76,47 @@ checkWinner:
 
 ;; r10 = temp1[1], r11 = temp2[2], *r12 -> arr[i], r15 = array
 while:
-	;; while (ax < 16)
+	;; while (i < 16)
 	cmp byte[int_i],16 		
 	jge done6
-
-	mov r12,r15
+	xor r12,r12
+	mov r12,r15				
 	add r12b,byte[int_i]
 
-	
 	;; temp1 = getcoord(i)
 	xor rdi,rdi
 	mov rdi,[int_i]		
 	call getcoord
-
-	mov [temp_1],rax
+	mov [temp_1],rax ;return val from get coord
 
 	xor r13,r13
-	mov r13,temp_1 
+	mov r13,temp_1 ;
 	
-	xor r10,r10
-	mov r10,[r13]
+	xor r10,r10	
+	mov r10,[r13]	
 
 	xor r13,r13
 	xor rax,rax
-
 	;; temp2 = getcoord(col_Index)
 	xor rdi,rdi
+	
 	mov rdi,[col_Index]
 	call getcoord
 
-	mov [temp_2],rax
+	mov [temp_2],rax ;return value from getcoord(col_Index)
 	mov r13,temp_2
 	inc r13
 
 	mov r11,[r13]
-	
 	;; clear r13 & return value
 	xor r13,r13
 	xor rax,rax
 	
 	;; if(arr[i] == 'x')
-	cmp byte[r12],120 		
+	cmp r12,120 		
 	jne done1
-
 	mov r13,playerRow	       ; 
 	add r13b,byte[playerRowIndex]  ; playerRow[playerRowIndex] = temp1[1]
-
 	mov byte[r13],r10b
 	inc byte[playerRowIndex]	; playerRowIndex++
 
@@ -129,11 +125,9 @@ while:
 	jmp done1
 
 	
-	
-
 done1:
 	;; if(arr[i] == 'o')
-	cmp byte[r12],111 
+	cmp r12,111 
 	jne done2
 
 	xor r13,r13
@@ -153,7 +147,7 @@ done2:
 	mov r13,r15
 	add r13b,byte[col_Index]
 	
-	cmp byte[r13],120
+	cmp r13,120
 	jne done3
 	
 	xor r13,r13
@@ -174,7 +168,7 @@ done3:
 	mov r13,r15
 	add r13b,byte[col_Index]
 
-	cmp byte[r13],111
+	cmp r13,111
 	jne done4
 
 	xor r13,r13
@@ -246,94 +240,8 @@ done6:
 
 	mov byte[int_i],0
 	xor r12,r12
-	
-	jmp diag1
 
 
-diag1:
-	cmp byte[int_i],16
-	jge exit_diag1
-
-	xor r12,r12
-	
-	mov r12,r15
-	add r12b,byte[int_i]
-
-	cmp byte[r12],120
-	je inc_num_x1
-	
-	cmp byte[r12],111
-	je inc_num_o1
-	
-	jmp inc_diag1
-
-inc_num_x1:
-	inc byte[num_x_1]
-	jmp inc_diag1
-
-inc_num_o1:
-	inc byte[num_o_1]
-	jmp inc_diag1
-
-	
-inc_diag1:	
-	add byte[int_i],5
-	jmp diag1
-
-
-exit_diag1:
-	mov byte[int_i],3
-	xor r12,r12
-
-	jmp diag2
-
-diag2:
-	cmp byte[int_i],13
-	jge exit_diag2
-
-	xor r12,r12
-	
-	mov r12,r15
-	add r12b,byte[int_i]
-
-	cmp byte[r12],120
-	je inc_num_x2
-
-	cmp byte[r12],111
-	je inc_num_o2
-
-	jmp inc_diag2
-
-inc_num_x2:
-	inc byte[num_x_2]
-	jmp inc_diag2
-
-inc_num_o2:
-	inc byte[num_o_2]
-	jmp inc_diag2
-
-inc_diag2:
-	add byte[int_i],3
-	jmp diag2
-
-	;; stupid diag cases are done
-	;; r10 & r11 are free registers
-exit_diag2:
-	mov byte[max_pl_dup],0
-	mov byte[max_cpu_dup],0
-
-	xor r10,r10
-	xor r11,r11
-
-	mov r10,[num_x_1]
-	mov r11,[num_x_2]
-	
-	cmp r10b,r11b
-	jg max_is_num_x_1
-
-	mov byte[max_pl_dup],r11b
-	jmp find_max_cpu_dup
-	
 max_is_num_x_1:
 	mov byte[max_pl_dup],r10b
 	jmp find_max_cpu_dup
