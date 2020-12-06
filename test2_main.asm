@@ -16,11 +16,13 @@ menu_input:		resb 1
 	global main
 main:
 
-
 	call compEasy
 	jmp exit
 
 
 exit:
-	mov rax,0
-	ret
+	xor rax,rax
+	mov rax,60
+	xor rdi,rdi
+	syscall
+	
