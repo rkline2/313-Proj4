@@ -44,18 +44,7 @@ randomNum:
 	xor r12,r12
 	mov r12,rdx
 	dec r12
-	
-	mov r11,rsi		; r11 -> array
-
-	add r11b,r12b
-	
-	cmp byte[r11],32		;~cmp byte[r11],0; is array[randNum] == NULL?
-	je  exit
-	jmp randomNum		
-		
-
-exit:	
-	mov byte[r11],111
-			; value gets returned  
+	xor rax,rax
+	mov rax,r12 ;return random num from 1-16
 	ret
 
