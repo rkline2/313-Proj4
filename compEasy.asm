@@ -62,7 +62,7 @@ compEasy:
 	pop rbp
 
 	cmp r14b,0
-	je get_random_val
+	je compEasy
 	
 	cmp r14b,2
 	je quit
