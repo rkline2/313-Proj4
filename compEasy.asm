@@ -47,24 +47,30 @@ compEasy:
 	mov rdi,array
 	
 	call checkWinner
-	mov r12,rax
+        mov r12,rax
 	mov r14,rax
-	
-	mov r13d,10
-	
-	xor rdx,rdx
-	xor rax,rax
-	
-	mov eax,r14d
-	div r13d
-	
-	xor r13,r13
-	mov r13b,al
 
-	cmp r13b,0
-	jg ai_mode
+	mov [test],eax
 	
-	jmp compEasy
+	push rbp
+	mov rbp,rsp
+	mov rdi,fmt
+	mov rsi,[test]
+	mov rax,0
+
+	call printf
+	pop rbp
+
+	cmp r14b,0
+	je get_random_val
+	
+	cmp r14b,2
+	je quit
+	
+	cmp r14b,3
+	je quit
+		
+	jmp ai_mode 
 	
 ai_mode:
 	xor rdi,rdi
@@ -76,6 +82,17 @@ ai_mode:
 	call o_marks_the_spot
 	
 	jmp compEasy
+	
+get_random_val:
+;;;  cpu's location is set
+	;; xor rdi,rdi
+	;; xor rsi,rsi
+
+	;; mov rdi,16
+	;; mov rsi,array
+	;; call randomNum
+	
+	
 quit:
 	
 	ret

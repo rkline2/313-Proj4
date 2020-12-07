@@ -8,7 +8,9 @@ fmt_dgt:	db "%d",10,0
 
 	section .bss
 opcode:		resd 1
-test:		resb 1
+temp1:		resd 1
+temp2:		resd 1
+	
 	section .text
 	global o_marks_the_spot
 	;; parameters go as follow: rdi,rsi,rdx,rcx,r8,r9
@@ -16,8 +18,11 @@ test:		resb 1
 o_marks_the_spot:
 ;;  Opcode:  8 (p=1 or c=2), 8 (row val), 8 (col val), 8 (diag 1 or 2)
 
+	xor r8,r8		;2nd digit
+	xor r9,r9		;3rd digit
+	xor r10,r10		;4th digit
+	
 	xor r12,r12		;r12 = array_ptr
-	xor r13,r13		;r13 = opcode_ptr
 	xor r14,r14		;r14 = opcode
 	xor r15,r15		;r15 = array
 	
@@ -25,46 +30,134 @@ o_marks_the_spot:
 	mov r14,rsi		
 	mov dword[opcode],r14d
 	
-	push rbp
-	mov rbp,rsp
-	mov rdi,fmt_dgt
-	mov rsi,[opcode]
-	mov rdx,0
-	call printf
-	pop rbp
+
+	mov r8d,100
+	xor rdx,rdx
+	xor rax,rax
+
+	mov eax,r14d
+	div r8d
 	
-	mov r13,opcode
-	;; rows
-	inc r13b
+	mov dword[temp1],eax
+
+	xor rdx,rdx
 	xor r8,r8
-	xor r10,r10
-	mov r10b,byte[r13]
 	
-	cmp r10b,0
+	mov r8d,10
+	
+	div r8d
+
+	xor rdx,rdx
+	mul r8d
+	
+	mov dword[temp2],eax
+
+	xor r8,r8
+	xor rdx,rdx
+	
+	mov r8,[temp1]
+	sub r8,[temp2]
+
+;; r9 ******************************** r9
+	mov r9d,10 		;change here
+	xor rdx,rdx
+	xor rax,rax
+
+	mov eax,r14d
+	div r9d
+
+	mov dword[temp1],eax
+
+	xor rdx,rdx
+	xor r9,r9
+
+	mov r9d,10
+
+	div r9d
+
+	xor rdx,rdx
+	mul r9d
+
+	mov dword[temp2],eax
+
+	xor r9,r9
+	mov r9d,10
+
+	div r9d
+
+	xor rdx,rdx
+	mul r9d
+
+	mov dword[temp2],eax
+
+	xor r9,r9
+	xor rdx,rdx
+
+	mov r9,[temp1]
+	sub r9,[temp2]
+
+;;  r10 ******************************** r10
+	mov r10d,1 		;change here
+	xor rdx,rdx
+	xor rax,rax
+
+	mov eax,r14d
+	div r10d
+
+	mov dword[temp1],eax
+
+	xor rdx,rdx
+	xor r10,r10
+ 
+	mov r10d,10
+
+	div r10d
+
+	xor rdx,rdx
+	mul r10d
+
+	mov dword[temp2],eax
+
+	xor r10,r10
+	mov r10d,10
+
+	div r10d
+
+	xor rdx,rdx
+	mul r10d
+
+	mov dword[temp2],eax
+
+	xor r10,r10
+	xor rdx,rdx
+
+	mov r10,[temp1]
+	sub r10,[temp2]
+	
+	;; rows	
+	cmp r8b,0
 	je row0
-	cmp r13b,1
+	cmp r8b,1
 	je row1
-	cmp r13b,2
+	cmp r8b,2
 	je row2
-	cmp r13b,3
+	cmp r8b,3
 	je row3
 
 	;; cols
-	inc r13
-	cmp byte[r13],0
+	cmp r9b,0
 	je col0
-	cmp byte[r13],1
+	cmp r9b,1
 	je col1
-	cmp byte[r13],2
+	cmp r9b,2
 	je col2
-	cmp byte[r13],3
+	cmp r9b,3
 	je col3
 
 	;; diags
-	inc r13
-	cmp byte[r13],1
+	cmp r10b,1
 	je diag1
-	cmp byte[r13],2
+	cmp r10b,2
 	je diag2
 
 	jmp err
