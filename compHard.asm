@@ -173,6 +173,25 @@ tie_break:
 	
 	jmp quit
 quit:
-	
+	xor r15,r15
+	mov r15,array
+	mov byte[num_moves],0
+	jmp clear_board
+
+clear_board:
+	cmp byte[num_moves],16
+	jge exit
+
+	mov byte[r15],32
+
+	inc r15
+	inc byte[num_moves]
+
+	jmp clear_board
+
+exit:
+	xor rax,rax
 	ret
+
+	
         
