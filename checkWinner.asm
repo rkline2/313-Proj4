@@ -1,528 +1,1456 @@
-
 	section .data
-printX: db "You Won!",10
+printX: db "X Won!",10
 len_X:  equ $-printX
 printO: db "COMPUTER WINS!",10
 len_O:  equ $-printO
-printdraw: db "its a draw!",10
-len_d:  equ $-printdraw
 	section .bss
 winner: resb 1
+	
+	
 	section .text
 	global checkWinner
 checkWinner:
 
 	xor r15,r15
+	xor r8,r8
+	xor r9,r9
+	
 	mov r15,rdi 		;r15 point to board array at begining r15=board[0]
 	
-row1X:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		cmp byte[r15],120
-		jne row1O
-		mov r14,r15
-		add r14,1
-		cmp byte[r14],120
-		jne row1O
-		mov r13,r15
-		add r13,2
-		cmp byte[r13],120
-		jne row1O
-		mov r12,r15
-		add r12,3
-		cmp byte[r12],120
-		je WonUser
-row1O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		cmp byte[r15],111
-		jne row2X
-		mov r14,r15
-		add r14,1
-		cmp byte[r14],111
-		jne row2X
-		mov r13,r15
-		add r13,2
-		cmp byte[r13],111
-		jne row2X
-		mov r12,r15
-		add r12,3
-		cmp byte[r12],111
-		je WonComp
-row2X:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		mov r11,r15
-		add r11,4
-		cmp byte[r11],120
-		jne row2O
-		mov r14,r11
-		add r14,1
-		cmp byte[r14],120
-		jne row2O
-		mov r13,r11
-		add r13,2
-		cmp byte[r13],120
-		jne row2O
-		mov r12,r11
-		add r12,3
-		cmp byte[r12],120
-		je WonUser
-row2O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		cmp byte[r11],111
-		jne row3X
-		mov r14,r11
-		add r14,1
-		cmp byte[r14],111
-		jne row3X
-		mov r13,r11
-		add r13,2
-		cmp byte[r13],111
-		jne row3X
-		mov r12,r11
-		add r12,3
-		cmp byte[r12],111
-		je WonComp
-row3X: ;add 8 not 4
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		mov r11,r15
-		add r11,8
-		cmp byte[r11],120
-		jne row3O
-		mov r14,r11
-		add r14,1
-		cmp byte[r14],120
-		jne row3O
-		mov r13,r11
-		add r13,2
-		cmp byte[r13],120
-		jne row3O
-		mov r12,r11
-		add r12,3
-		cmp byte[r12],120
-		je WonUser
-row3O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		cmp byte[r11],111
-		jne row4X
-		mov r14,r11
-		add r14,1
-		cmp byte[r14],111
-		jne row4X
-		mov r13,r11
-		add r13,2
-		cmp byte[r13],111
-		jne row4X
-		mov r12,r11
-		add r12,3
-		cmp byte[r12],111
-		je WonComp
-row4X:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		mov r11,r15
-		add r11,12
-		cmp byte[r11],120
-		jne row4O
-		mov r14,r11
-		add r14,1
-		cmp byte[r14],120
-		jne row4O
-		mov r13,r11
-		add r13,2
-		cmp byte[r13],120
-		jne row4O
-		mov r12,r11
-		add r12,3
-		cmp byte[r12],120
-		je WonUser
-row4O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		cmp byte[r11],111
-		jne col1X
-		mov r14,r11
-		add r14,1
-		cmp byte[r14],111
-		jne col1X
-		mov r13,r11
-		add r13,2
-		cmp byte[r13],111
-		jne col1X
-		mov r12,r11
-		add r12,3
-		cmp byte[r12],111
-		je WonComp
-col1X:
+	jmp row0
 		
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		mov r14,r15
-		cmp byte[r14],120
-		jne col1O
-		mov r13,r14
-		add r13,4
-		cmp byte[r13],120
-		jne col1O
-		mov r12,r14
-		add r12,8
-		cmp byte[r12],120
-		jne col1O
-		mov r11,r14
-		add r11,12
-		cmp byte[r11],120
-		je WonUser
-col1O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		mov r14,r15
-		cmp byte[r14],111
-		jne col2X
-		mov r13,r14
-		add r13,4
-		cmp byte[r13],111
-		jne col2X
-		mov r12,r14
-		add r12,8
-		cmp byte[r12],111
-		jne col2X
-		mov r11,r14
-		add r11,12
-		cmp byte[r11],111
-		je WonComp
-col2X:
-		
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		mov r14,r15
-		add r14,1
-		cmp byte[r14],120
-		jne col2O
-		mov r13,r14
-		add r13,4
-		cmp byte[r13],120
-		jne col2O
-		mov r12,r14
-		add r12,8
-		cmp byte[r12],120
-		jne col2O
-		mov r11,r14
-		add r11,12
-		cmp byte[r11],120
-		je WonUser
-col2O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		mov r14,r15
-		add r14,1
-		cmp byte[r14],111
-		jne col3X
-		mov r13,r14
-		add r13,4
-		cmp byte[r13],111
-		jne col3X
-		mov r12,r14
-		add r12,8
-		cmp byte[r12],111
-		jne col3X
-		mov r11,r14
-		add r11,12
-		cmp byte[r11],111
-		je WonComp
-col3X:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		mov r14,r15
-		add r14,2
-		cmp byte[r14],120
-		jne col3O
-		mov r13,r14
-		add r13,4
-		cmp byte[r13],120
-		jne col3O
-		mov r12,r14
-		add r12,8
-		cmp byte[r12],120
-		jne col3O
-		mov r11,r14
-		add r11,12
-		cmp byte[r11],120
-		je WonUser
-col3O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		mov r14,r15
-		add r14,2
-		cmp byte[r14],111
-		jne col4X
-		mov r13,r14
-		add r13,4
-		cmp byte[r13],111
-		jne col4X
-		mov r12,r14
-		add r12,8
-		cmp byte[r12],111
-		jne col4X
-		mov r11,r14
-		add r11,12
-		cmp byte[r11],111
-		je WonComp
-col4X:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		mov r14,r15
-		add r14,3
-		cmp byte[r14],120
-		jne col4O
-		mov r13,r14
-		add r13,4
-		cmp byte[r13],120
-		jne col4O
-		mov r12,r14
-		add r12,8
-		cmp byte[r12],120
-		jne col4O
-		mov r11,r14
-		add r11,12
-		cmp byte[r11],120
-		je WonUser
-col4O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		mov r14,r15
-		add r14,3
-		cmp byte[r14],111
-		jne diag1X
-		mov r13,r14
-		add r13,4
-		cmp byte[r13],111
-		jne diag1X
-		mov r12,r14
-		add r12,8
-		cmp byte[r12],111
-		jne diag1X
-		mov r11,r14
-		add r11,12
-		cmp byte[r11],111
-		je WonComp
-diag1X:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		
-		mov r14,r15
-		
-		cmp byte[r14],120
-		jne diag1O
-		mov r13,r14
-		add r13,5
-		cmp byte[r13],120
-		jne diag1O
-		mov r12,r14
-		add r12,10
-		cmp byte[r12],120
-		jne diag1O
-		mov r11,r14
-		add r11,15
-		cmp byte[r11],120
-		je WonUser
-diag1O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		
-		mov r14,r15
-		
-		cmp byte[r14],111
-		jne diag2X
-		mov r13,r14
-		add r13,5
-		cmp byte[r13],111
-		jne diag2X
-		mov r12,r14
-		add r12,10
-		cmp byte[r12],111
-		jne diag2X
-		mov r11,r14
-		add r11,15
-		cmp byte[r11],111
-		je WonComp
-			
-		
-diag2X:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		
-		mov r14,r15
-		add r14,3
-		cmp byte[r14],120
-		jne diag2O
-		mov r13,r14
-		add r13,3
-		cmp byte[r13],120
-		jne diag2O
-		mov r12,r14
-		add r12,6
-		cmp byte[r12],120
-		jne diag2O
-		mov r11,r14
-		add r11,9
-		cmp byte[r11],120
-		je WonUser
-diag2O:
-		xor r14,r14
-		xor r13,r13
-		xor r12,r12
-		xor r11,r11
-		
-		mov r14,r15
-		add r14,3
-		cmp byte[r14],111
-		jne draw
-		mov r13,r14
-		add r13,3
-		cmp byte[r13],111
-		jne draw
-		mov r12,r14
-		add r12,6
-		cmp byte[r12],111
-		jne draw
-		mov r11,r14
-		add r11,9
-		cmp byte[r11],111
-		je WonComp
-draw:
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		add r15,1
-		
-		cmp byte[r15],32
-		je continue
-		jmp printDraw
-		
-continue:
-		xor rax,rax
-		ret
-printDraw:
+;;  row 0 ********************************************* row 0
+row0:
+	xor r8,r8		;r8 = num_x
+	xor r9,r9		;r9 = num_o
+	xor r10,r10		;r10 = num_sp
+	
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	cmp byte[r14],120
+	je row0_0_is_x
+	
+	cmp byte[r14],111
+	je row0_0_is_o
+	
+	inc r10			;num_sp++
+	
+	jmp row0_1
+	
+row0_0_is_x:
+	inc r8
+	jmp row0_1
+	
+row0_0_is_o:
+	inc r9
+	jmp row0_1
+	
+row0_1:	
+	xor r14,r14
+	
+	mov r14,r15
+	add r14,1		; r14 = array[1]
+	
+	cmp byte[r14],120
+	je row0_1_is_x
+	
+	cmp byte[r14],111
+	je row0_1_is_o
+	
+	inc r10
+
+	jmp row0_2
+
+row0_1_is_x:
+	inc r8
+	jmp row0_2
+
+row0_1_is_o:
+	inc r9
+	jmp row0_2
+
+	
+row0_2:	
+	xor r14,r14
+
+	mov r14,r15
+	add r14,2
+	cmp byte[r14],120
+	je row0_2_is_x
+	
+	cmp byte[r14],111
+	je row0_2_is_o
+
+	inc r10			; num_sp++
+	
+	jmp row0_3
+
+row0_2_is_x:
+	inc r8
+	jmp row0_3
+
+row0_2_is_o:
+	inc r9
+	jmp row0_3
+	
+	
+row0_3:	
+	xor r14,r14
+
+	mov r14,r15
+	add r14,3
+	
+	cmp byte[r14],120
+	je row0_3_is_x
+	
+	cmp byte[r14],111
+	je row0_3_is_o
+	
+	inc r10
+	jmp cmp_row0
+
+row0_3_is_x:
+	inc r8
+	jmp cmp_row0
+
+row0_3_is_o:
+	inc r9
+	jmp cmp_row0
+	
+cmp_row0:	
+	cmp r8,4		; player is winner
+	je WonUser 
+	cmp r9,4		; cpu is winner
+	je WonComp
+	
+	cmp r8,3		; player is almost winner
+	je cmp_almost_p_row0
+
+	cmp r9,3		; cpu is almost winner
+	je cmp_almost_c_row0
+	jmp row1
+
+cmp_almost_p_row0:
+	cmp r10,1
+	je almost_p_row0
+	
+	jmp row1
+	
+cmp_almost_c_row0:
+	cmp r10,1
+	je almost_c_row0
+	
+	jmp row1
+	
+;; row 1 ********************************************* row 1
+	
+row1:
+	xor r8,r8	;r8 = num_x
+	xor r9,r9	;r9 = num_o
+	xor r10,r10	;r10 = num_sp
+
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	add r14,4
+	
+	cmp byte[r14],120
+	je row1_0_is_x
+
+	cmp byte[r14],111
+	je row1_0_is_o
+
+	inc r10		;num_sp++
+
+	jmp row1_1
+
+
+row1_0_is_x:
+	inc r8
+	jmp row1_1
+
+row1_0_is_o:
+	inc r9
+	jmp row1_1
+	
+row1_1:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,5	; r14 = array[1]
+
+	cmp byte[r14],120
+	je row1_1_is_x
+
+	cmp byte[r14],111
+	je row1_1_is_o
+
+	inc r10
+
+	jmp row1_2
+
+row1_1_is_x:
+	inc r8
+	jmp row1_2
+
+row1_1_is_o:
+	inc r9
+	jmp row1_2
+
+row1_2:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,6
+	
+	cmp byte[r14],120
+	je row1_2_is_x
+	
+	cmp byte[r14],111
+	je row1_2_is_o
+
+	inc r10		; num_sp++
+
+	jmp row1_3
+
+row1_2_is_x:
+	inc r8
+	jmp row1_3
+
+row1_2_is_o:
+	inc r9
+	jmp row1_3
+	
+
+row1_3:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,7
+	
+	cmp byte[r14],120
+	je row1_3_is_x
+	
+	cmp byte[r14],111
+	je row1_3_is_o
+	
+	inc r10
+	jmp cmp_row1
+
+row1_3_is_x:
+	inc r8
+	jmp cmp_row1
+
+row1_3_is_o:
+	inc r9
+	jmp cmp_row1
+
+cmp_row1:
+	cmp r8,4	; player is winner
+	je WonUser
+	
+	cmp r9,4	; cpu is winner
+	je WonComp
+
+	cmp r8,3	; player is almost winner
+	je cmp_almost_p_row1
+
+	cmp r9,3	; cpu is almost winner
+	je cmp_almost_c_row1
+	jmp row2
+
+cmp_almost_p_row1:
+	cmp r10,1
+	je almost_p_row1
+
+	jmp row2
+
+cmp_almost_c_row1:
+	cmp r10,1
+	je almost_c_row1
+
+	jmp row2
+	
+;;  row 2 ********************************************* row 2
+	
+row2:
+	xor r8,r8       ;r8 = num_x
+	xor r9,r9       ;r9 = num_o
+	xor r10,r10     ;r10 = num_sp
+
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	add r14,8	;change here
+
+	cmp byte[r14],120
+	je row2_0_is_x	;change here
+
+	cmp byte[r14],111
+	je row2_0_is_o	;change here
+
+	inc r10         ;num_sp++
+
+	jmp row2_1	;change here
+
+
+row2_0_is_x:
+	inc r8
+	jmp row2_1	;change here
+
+row2_0_is_o:
+	inc r9
+	jmp row2_1	;change here
+
+row2_1:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,9	;change here
+
+	cmp byte[r14],120
+	je row2_1_is_x	;change here
+
+	cmp byte[r14],111
+	je row2_1_is_o	;change here
+
+	inc r10
+
+	jmp row2_2	;change here
+
+row2_1_is_x:
+	inc r8
+	jmp row2_2	;change here
+
+row2_1_is_o:
+	inc r9
+	jmp row2_2	;change here
+
+row2_2:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,10	;change here
+
+	cmp byte[r14],120
+	je row2_2_is_x
+	
+	cmp byte[r14],111
+	je row2_2_is_o
+
+	inc r10		;num_sp++
+
+	jmp row2_3	;change here
+
+row2_2_is_x:
+	inc r8
+	jmp row2_3	;change here
+
+row2_2_is_o:
+	inc r9
+	jmp row2_3	;change here
+
+row2_3:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,11	;change here
+
+	cmp byte[r14],120
+	je row2_3_is_x	;change here
+
+	cmp byte[r14],111
+	je row2_3_is_o	;change here
+
+	inc r10
+	jmp cmp_row2
+
+row2_3_is_x:
+	inc r8
+	jmp cmp_row2	;change here
+
+row2_3_is_o:
+	inc r9
+	jmp cmp_row2	;change here
+
+cmp_row2:
+	cmp r8,4        ; player is winner
+	je WonUser
+
+	cmp r9,4        ; cpu is winner
+	je WonComp
+
+	cmp r8,3        ; player is almost winner
+	je cmp_almost_p_row2 ;change here
+
+	cmp r9,3        ; cpu is almost winner
+	je cmp_almost_c_row2 ;change here
+	jmp row3     ;change here
+
+cmp_almost_p_row2:
+	cmp r10,1
+	je almost_p_row2 ;change here
+
+	jmp row3	;change here
+
+cmp_almost_c_row2:
+	cmp r10,1
+	je almost_c_row2 ;change here
+
+	jmp row3	;change here
+	
+
+;;  row 3 ********************************************* row 3
+
+row3:
+	xor r8,r8       ;r8 = num_x
+	xor r9,r9       ;r9 = num_o
+	xor r10,r10     ;r10 = num_sp
+
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	add r14,12	;change here
+
+	cmp byte[r14],120
+	je row3_0_is_x	;change here
+
+	cmp byte[r14],111
+	je row3_0_is_o	;change here
+
+	inc r10         ;num_sp++
+
+	jmp row3_1	;change here
+
+
+row3_0_is_x:
+	inc r8
+	jmp row3_1	;change here
+
+row3_0_is_o:
+	inc r9
+	jmp row3_1	;change here
+
+row3_1:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,13	;change here
+
+	cmp byte[r14],120
+	je row3_1_is_x	;change here
+
+	cmp byte[r14],111
+	je row3_1_is_o	;change here
+
+	inc r10
+
+	jmp row3_2	;change here
+
+row3_1_is_x:
+	inc r8
+	jmp row3_2	;change here
+
+row3_1_is_o:
+	inc r9
+	jmp row3_2	;change here
+
+row3_2:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,14	;change here
+
+	cmp byte[r14],120
+	je row3_2_is_x		;change here
+
+	cmp byte[r14],111
+	je row3_2_is_o		;change here
+
+	inc r10		;num_sp++
+
+	jmp row3_3	;change here
+
+row3_2_is_x:
+	inc r8
+	jmp row3_3	;change here
+
+row3_2_is_o:
+	inc r9
+	jmp row3_3	;change here
+
+row3_3:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,15	;change here
+
+	cmp byte[r14],120
+	je row3_3_is_x	;change here
+
+	cmp byte[r14],111
+	je row3_3_is_o	;change here
+
+	inc r10
+	jmp cmp_row3
+
+row3_3_is_x:
+	inc r8
+	jmp cmp_row3	;change here
+
+row3_3_is_o:
+	inc r9
+	jmp cmp_row3	;change here
+
+cmp_row3:
+	cmp r8,4        ; player is winner
+	je WonUser
+
+	cmp r9,4        ; cpu is winner
+	je WonComp
+
+	cmp r8,3        ; player is almost winner
+	je cmp_almost_p_row3 ;change here
+
+	cmp r9,3        ; cpu is almost winner
+	je cmp_almost_c_row3 ;change here
+	jmp col0     ;change here
+
+cmp_almost_p_row3:
+	cmp r10,1
+	je almost_p_row3 ;change here
+
+	jmp col0	;change here
+
+cmp_almost_c_row3:
+	cmp r10,1
+	je almost_c_row3 ;change here
+
+	jmp col0	;change here
+	
+;;   col 0 ********************************************* col 0
+	
+col0:
+	xor r8,r8       ;r8 = num_x
+	xor r9,r9       ;r9 = num_o
+	xor r10,r10     ;r10 = num_sp
+
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	add r14,0	;change here
+
+	cmp byte[r14],120
+	je col0_0_is_x	;change here
+
+	cmp byte[r14],111
+	je col0_0_is_o	;change here
+
+	inc r10         ;num_sp++
+
+	jmp col0_1	;change here
+
+
+col0_0_is_x:
+	inc r8
+	jmp col0_1	;change here
+
+col0_0_is_o:
+	inc r9
+	jmp col0_1	;change here
+
+col0_1:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,4	;change here
+
+	cmp byte[r14],120
+	je col0_1_is_x	;change here
+
+	cmp byte[r14],111
+	je col0_1_is_o	;change here
+
+	inc r10
+
+	jmp col0_2	;change here
+
+col0_1_is_x:
+	inc r8
+	jmp col0_2	;change here
+
+col0_1_is_o:
+	inc r9
+	jmp col0_2	;change here
+
+col0_2:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,8	;change here
+
+	cmp byte[r14],120
+	je col0_2_is_x		;change here
+
+	cmp byte[r14],111
+	je col0_2_is_o		;change here
+
+	inc r10		;num_sp++
+
+	jmp col0_3	;change here
+
+col0_2_is_x:
+	inc r8
+	jmp col0_3	;change here
+
+col0_2_is_o:
+	inc r9
+	jmp col0_3	;change here
+
+col0_3:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,12	;change here
+
+	cmp byte[r14],120
+	je col0_3_is_x	;change here
+
+	cmp byte[r14],111
+	je col0_3_is_o	;change here
+
+	inc r10
+	jmp cmp_col0
+
+col0_3_is_x:
+	inc r8
+	jmp cmp_col0	;change here
+
+col0_3_is_o:
+	inc r9
+	jmp cmp_col0	;change here
+
+cmp_col0:
+	cmp r8,4        ; player is winner
+	je WonUser
+
+	cmp r9,4        ; cpu is winner
+	je WonComp
+
+	cmp r8,3        ; player is almost winner
+	je cmp_almost_p_col0 ;change here
+
+	cmp r9,3        ; cpu is almost winner
+	je cmp_almost_c_col0 ;change here
+	jmp col1     ;change here
+
+cmp_almost_p_col0:
+	cmp r10,1
+	je almost_p_col0 ;change here
+
+	jmp col1	;change here
+
+cmp_almost_c_col0:
+	cmp r10,1
+	je almost_c_col0 ;change here
+
+	jmp col1	;change here
+	
+;;    col 1 ********************************************* col 1
+col1:
+	xor r8,r8       ;r8 = num_x
+	xor r9,r9       ;r9 = num_o
+	xor r10,r10     ;r10 = num_sp
+
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	add r14,1	;change here
+
+	cmp byte[r14],120
+	je col1_0_is_x	;change here
+
+	cmp byte[r14],111
+	je col1_0_is_o	;change here
+
+	inc r10         ;num_sp++
+
+	jmp col1_1	;change here
+
+
+col1_0_is_x:
+	inc r8
+	jmp col1_1	;change here
+
+col1_0_is_o:
+	inc r9
+	jmp col1_1	;change here
+
+col1_1:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,5	;change here
+
+	cmp byte[r14],120
+	je col1_1_is_x	;change here
+
+	cmp byte[r14],111
+	je col1_1_is_o	;change here
+
+	inc r10
+
+	jmp col1_2	;change here
+
+col1_1_is_x:
+	inc r8
+	jmp col1_2	;change here
+
+col1_1_is_o:
+	inc r9
+	jmp col1_2	;change here
+
+col1_2:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,9	;change here
+
+	cmp byte[r14],120
+	je col1_2_is_x		;change here
+
+	cmp byte[r14],111
+	je col1_2_is_o		;change here
+
+	inc r10		;num_sp++
+
+	jmp col1_3	;change here
+
+col1_2_is_x:
+	inc r8
+	jmp col1_3	;change here
+
+col1_2_is_o:
+	inc r9
+	jmp col1_3	;change here
+
+col1_3:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,13	;change here
+
+	cmp byte[r14],120
+	je col1_3_is_x	;change here
+
+	cmp byte[r14],111
+	je col1_3_is_o	;change here
+
+	inc r10
+	jmp cmp_col1
+
+col1_3_is_x:
+	inc r8
+	jmp cmp_col1	;change here
+
+col1_3_is_o:
+	inc r9
+	jmp cmp_col1	;change here
+
+cmp_col1:
+	cmp r8,4        ; player is winner
+	je WonUser
+
+	cmp r9,4        ; cpu is winner
+	je WonComp
+
+	cmp r8,3        ; player is almost winner
+	je cmp_almost_p_col1 ;change here
+
+	cmp r9,3        ; cpu is almost winner
+	je cmp_almost_c_col1 ;change here
+	jmp col2     ;change here
+
+cmp_almost_p_col1:
+	cmp r10,1
+	je almost_p_col1 ;change here
+
+	jmp col2	;change here
+
+cmp_almost_c_col1:
+	cmp r10,1
+	je almost_c_col1 ;change here
+
+	jmp col2	;change here
+	
+;;    col 2 ********************************************* col 2
+col2:
+	xor r8,r8       ;r8 = num_x
+	xor r9,r9       ;r9 = num_o
+	xor r10,r10     ;r10 = num_sp
+
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	add r14,2	;change here
+
+	cmp byte[r14],120
+	je col2_0_is_x	;change here
+
+	cmp byte[r14],111
+	je col2_0_is_o	;change here
+
+	inc r10         ;num_sp++
+
+	jmp col2_1	;change here
+
+
+col2_0_is_x:
+	inc r8
+	jmp col2_1	;change here
+
+col2_0_is_o:
+	inc r9
+	jmp col2_1	;change here
+
+col2_1:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,6	;change here
+
+	cmp byte[r14],120
+	je col2_1_is_x	;change here
+
+	cmp byte[r14],111
+	je col2_1_is_o	;change here
+
+	inc r10
+
+	jmp col2_2	;change here
+
+col2_1_is_x:
+	inc r8
+	jmp col2_2	;change here
+
+col2_1_is_o:
+	inc r9
+	jmp col2_2	;change here
+
+col2_2:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,10	;change here
+
+	cmp byte[r14],120
+	je col2_2_is_x		;change here
+
+	cmp byte[r14],111
+	je col2_2_is_o		;change here
+
+	inc r10		;num_sp++
+
+	jmp col2_3	;change here
+
+col2_2_is_x:
+	inc r8
+	jmp col2_3	;change here
+
+col2_2_is_o:
+	inc r9
+	jmp col2_3	;change here
+
+col2_3:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,14	;change here
+
+	cmp byte[r14],120
+	je col2_3_is_x	;change here
+
+	cmp byte[r14],111
+	je col2_3_is_o	;change here
+
+	inc r10
+	jmp cmp_col2
+
+col2_3_is_x:
+	inc r8
+	jmp cmp_col2	;change here
+
+col2_3_is_o:
+	inc r9
+	jmp cmp_col2	;change here
+
+cmp_col2:
+	cmp r8,4        ; player is winner
+	je WonUser
+
+	cmp r9,4        ; cpu is winner
+	je WonComp
+
+	cmp r8,3        ; player is almost winner
+	je cmp_almost_p_col2 ;change here
+
+	cmp r9,3        ; cpu is almost winner
+	je cmp_almost_c_col2 ;change here
+	jmp col3     ;change here
+
+cmp_almost_p_col2:
+	cmp r10,1
+	je almost_p_col2 ;change here
+
+	jmp col3	;change here
+
+cmp_almost_c_col2:
+	cmp r10,1
+	je almost_c_col2 ;change here
+
+	jmp col3	;change here
+
+;;     col 3 ********************************************* col 3
+
+col3:
+	xor r8,r8       ;r8 = num_x
+	xor r9,r9       ;r9 = num_o
+	xor r10,r10     ;r10 = num_sp
+
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	add r14,3	;change here
+
+	cmp byte[r14],120
+	je col3_0_is_x	;change here
+
+	cmp byte[r14],111
+	je col3_0_is_o	;change here
+
+	inc r10         ;num_sp++
+
+	jmp col3_1	;change here
+
+
+col3_0_is_x:
+	inc r8
+	jmp col3_1	;change here
+
+col3_0_is_o:
+	inc r9
+	jmp col3_1	;change here
+
+col3_1:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,7	;change here
+
+	cmp byte[r14],120
+	je col3_1_is_x	;change here
+
+	cmp byte[r14],111
+	je col3_1_is_o	;change here
+
+	inc r10
+
+	jmp col3_2	;change here
+
+col3_1_is_x:
+	inc r8
+	jmp col3_2	;change here
+
+col3_1_is_o:
+	inc r9
+	jmp col3_2	;change here
+
+col3_2:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,11	;change here
+
+	cmp byte[r14],120
+	je col3_2_is_x		;change here
+
+	cmp byte[r14],111
+	je col3_2_is_o		;change here
+
+	inc r10		;num_sp++
+
+	jmp col3_3	;change here
+
+col3_2_is_x:
+	inc r8
+	jmp col3_3	;change here
+
+col3_2_is_o:
+	inc r9
+	jmp col3_3	;change here
+
+col3_3:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,15	;change here
+
+	cmp byte[r14],120
+	je col3_3_is_x	;change here
+
+	cmp byte[r14],111
+	je col3_3_is_o	;change here
+
+	inc r10
+	jmp cmp_col3
+
+col3_3_is_x:
+	inc r8
+	jmp cmp_col3	;change here
+
+col3_3_is_o:
+	inc r9
+	jmp cmp_col3	;change here
+
+cmp_col3:
+	cmp r8,4        ; player is winner
+	je WonUser
+
+	cmp r9,4        ; cpu is winner
+	je WonComp
+
+	cmp r8,3        ; player is almost winner
+	je cmp_almost_p_col3 ;change here
+
+	cmp r9,3        ; cpu is almost winner
+	je cmp_almost_c_col3 ;change here
+	jmp diag1  ;change here
+
+cmp_almost_p_col3:
+	cmp r10,1
+	je almost_p_col3 ;change here
+
+	jmp diag1	;change here
+
+cmp_almost_c_col3:
+	cmp r10,1
+	je almost_c_col3 ;change here
+
+	jmp diag1	;change here
+
+;;  diag 1 ********************************************* diag 1
+
+diag1:
+	xor r8,r8       ;r8 = num_x
+	xor r9,r9       ;r9 = num_o
+	xor r10,r10     ;r10 = num_sp
+
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	add r14,0	;change here
+
+	cmp byte[r14],120
+	je diag1_0_is_x	;change here
+
+	cmp byte[r14],111
+	je diag1_0_is_o	;change here
+
+	inc r10         ;num_sp++
+
+	jmp diag1_1	;change here
+
+
+diag1_0_is_x:
+	inc r8
+	jmp diag1_1	;change here
+
+diag1_0_is_o:
+	inc r9
+	jmp diag1_1	;change here
+
+diag1_1:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,5	;change here
+
+	cmp byte[r14],120
+	je diag1_1_is_x	;change here
+
+	cmp byte[r14],111
+	je diag1_1_is_o	;change here
+
+	inc r10
+
+	jmp diag1_2	;change here
+
+diag1_1_is_x:
+	inc r8
+	jmp diag1_2	;change here
+
+diag1_1_is_o:
+	inc r9
+	jmp diag1_2	;change here
+
+diag1_2:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,10	;change here
+
+	cmp byte[r14],120
+	je diag1_2_is_x		;change here
+
+	cmp byte[r14],111
+	je diag1_2_is_o		;change here
+
+	inc r10		;num_sp++
+
+	jmp diag1_3	;change here
+
+diag1_2_is_x:
+	inc r8
+	jmp diag1_3	;change here
+
+diag1_2_is_o:
+	inc r9
+	jmp diag1_3	;change here
+
+diag1_3:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,15	;change here
+
+	cmp byte[r14],120
+	je diag1_3_is_x	;change here
+
+	cmp byte[r14],111
+	je diag1_3_is_o	;change here
+
+	inc r10
+	jmp cmp_diag1
+
+diag1_3_is_x:
+	inc r8
+	jmp cmp_diag1	;change here
+
+diag1_3_is_o:
+	inc r9
+	jmp cmp_diag1	;change here
+
+cmp_diag1:
+	cmp r8,4        ; player is winner
+	je WonUser
+
+	cmp r9,4        ; cpu is winner
+	je WonComp
+
+	cmp r8,3        ; player is almost winner
+	je cmp_almost_p_diag1 ;change here
+
+	cmp r9,3        ; cpu is almost winner
+	je cmp_almost_c_diag1 ;change here
+	jmp diag2     ;change here
+
+cmp_almost_p_diag1:
+	cmp r10,1
+	je almost_p_diag1 ;change here
+
+	jmp diag2	;change here
+
+cmp_almost_c_diag1:
+	cmp r10,1
+	je almost_c_diag1 ;change here
+
+	jmp diag2	;change here
+	
+;;  diag 2 ********************************************* diag 2
+
+diag2:
+	xor r8,r8       ;r8 = num_x
+	xor r9,r9       ;r9 = num_o
+	xor r10,r10     ;r10 = num_sp
+
+	xor r14,r14
+	xor r13,r13
+	xor r12,r12
+
+	mov r14,r15
+	add r14,3	;change here
+
+	cmp byte[r14],120
+	je diag2_0_is_x	;change here
+
+	cmp byte[r14],111
+	je diag2_0_is_o	;change here
+
+	inc r10         ;num_sp++
+
+	jmp diag2_1	;change here
+
+
+diag2_0_is_x:
+	inc r8
+	jmp diag2_1	;change here
+
+diag2_0_is_o:
+	inc r9
+	jmp diag2_1	;change here
+
+diag2_1:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,6	;change here
+
+	cmp byte[r14],120
+	je diag2_1_is_x	;change here
+
+	cmp byte[r14],111
+	je diag2_1_is_o	;change here
+
+	inc r10
+
+	jmp diag2_2	;change here
+
+diag2_1_is_x:
+	inc r8
+	jmp diag2_2	;change here
+
+diag2_1_is_o:
+	inc r9
+	jmp diag2_2	;change here
+
+diag2_2:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,9	;change here
+
+	cmp byte[r14],120
+	je diag2_2_is_x		;change here
+
+	cmp byte[r14],111
+	je diag2_2_is_o		;change here
+
+	inc r10		;num_sp++
+
+	jmp diag2_3	;change here
+
+diag2_2_is_x:
+	inc r8
+	jmp diag2_3	;change here
+
+diag2_2_is_o:
+	inc r9
+	jmp diag2_3	;change here
+
+diag2_3:
+	xor r14,r14
+
+	mov r14,r15
+	add r14,12	;change here
+
+	cmp byte[r14],120
+	je diag2_3_is_x	;change here
+
+	cmp byte[r14],111
+	je diag2_3_is_o	;change here
+
+	inc r10
+	jmp cmp_diag2
+
+diag2_3_is_x:
+	inc r8
+	jmp cmp_diag2	;change here
+
+diag2_3_is_o:
+	inc r9
+	jmp cmp_diag2	;change here
+
+cmp_diag2:
+	cmp r8,4        ; player is winner
+	je WonUser
+
+	cmp r9,4        ; cpu is winner
+	je WonComp
+
+	cmp r8,3        ; player is almost winner
+	je cmp_almost_p_diag2 ;change here
+
+	cmp r9,3        ; cpu is almost winner
+	je cmp_almost_c_diag2 ;change here
+	
+	jmp default_ret   ;change here
+
+cmp_almost_p_diag2:
+	cmp r10,1
+	je almost_p_diag2 ;change here
+
+	jmp default_ret	;change here
+
+cmp_almost_c_diag2:
+	cmp r10,1
+	je almost_c_diag2 ;change here
+
+	jmp default_ret	;change here
+
+	
+;; return values are opcode for "almost"
+	
+;; 8 (p=1 or c=2), 8 (row val), 8 (col val), 8 (diag 1 or 2)	
+
+;; ********************************************
+almost_p_row0:
 	xor rax,rax
-	mov rax,1
-	mov rdi,1
-	mov rsi,printdraw
-	mov rdx,len_d
-	syscall
-	jmp finish
-		
-WonUser:
-	xor rdi,rdi
-	xor rax,rax
-	mov rax,1
-	mov rdi,1
-	mov rsi,printX
-	mov rdx,len_X
-	syscall
-	jmp finish
-WonComp:
-	xor rdi,rdi
-	xor rax,rax
-	mov rax,1
-	mov rdi,1
-	mov rsi,printO
-	mov rdx,len_O
-	syscall	
-	jmp finish
-finish:
-	xor rax,rax
-	mov rax,1
+	mov rax,1088
+
 	ret
+almost_p_row1:
+	xor rax,rax
+	mov rax,1188
+	
+	ret
+almost_p_row2:
+	xor rax,rax
+	mov rax,1288
+
+	ret
+almost_p_row3:
+	xor rax,rax
+	mov rax,1388
+
+	ret
+	
+;; ********************************************
+almost_p_col0:
+	xor rax,rax
+	mov rax,1808
+
+	ret
+almost_p_col1:
+	xor rax,rax
+	mov rax,1818
+
+	ret
+almost_p_col2:
+	xor rax,rax
+	mov rax,1828
+
+	ret
+almost_p_col3:
+	xor rax,rax
+	mov rax,1838
+
+	ret
+	
+;; ********************************************
+almost_p_diag1:
+	xor rax,rax
+	mov rax,1881
+
+	ret
+
+almost_p_diag2:
+	xor rax,rax
+	mov rax,1882
+
+	ret
+;;  ********************************************
+almost_c_row0:
+	xor rax,rax
+	mov rax,2088
+
+	ret
+almost_c_row1:
+	xor rax,rax
+	mov rax,2188
+
+	ret
+almost_c_row2:
+	xor rax,rax
+	mov rax,2288
+
+	ret
+almost_c_row3:
+	xor rax,rax
+	mov rax,2388
+
+	ret
+;;********************************************
+almost_c_col0:
+	xor rax,rax
+	mov rax,2808
+
+	ret
+almost_c_col1:
+	xor rax,rax
+	mov rax,2818
+
+	ret
+almost_c_col2:
+	xor rax,rax
+	mov rax,2828
+
+	ret
+almost_c_col3:
+	xor rax,rax
+	mov rax,2838
+
+	ret
+;; ********************************************
+
+almost_c_diag1:
+	xor rax,rax
+	mov rax,2881
+
+	ret
+
+almost_c_diag2:
+	xor rax,rax
+	mov rax,2882
+
+	ret
+	
+;; ********************************************
+	
+
+default_ret:
+	xor rax,rax
+	mov rax,0
+	ret
+	
+WonUser:
+	xor rax,rax
+	mov rax,2
+	ret
+WonComp:
+	xor rax,rax
+	mov rax,3
+	
+	ret
+
 		
 	
 		

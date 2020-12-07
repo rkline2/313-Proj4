@@ -3,76 +3,80 @@
 	extern randomNum
 	extern askLocation
 	extern checkWinner
+	extern o_marks_the_spot
 	
         section .data
 	
 array:		db "                "
+fmt:		db "%d",10,0
 	
         section .bss
+test:		resd 1
 winner:		resb 1
 	section .text
 	global compEasy
         
         
 compEasy:
-	;; parameters goes as follow: (rdi,rsi,rdx,rcx,r8,r9)	
-	;; askLocation(array)
-	xor rax,rax
-	xor rdi,rdi
-	mov rdi,array ;pass in array into ask Location
-    call askLocation
-	xor rdi,rdi
-	mov rdi,array
-	call checkWinner
-	xor r14,r14
-	mov r14,rax
-	cmp r14,1
-	je quit
-	;; cpu's location is set
-	xor rdi,rdi
-	;pass in max and array into Random Num Generator
-	mov rdi,16
-	call randomNum
-	;CPU move to random spot returned from RandomNum
-	jmp compMove
-continue:
-	;call Draw Board to show CPU's move
+	;; parameters goes as follow: (rdi,rsi,rdx,rcx,r8,r9)
+	;; rax value is returned
+	
+	;; printBoard(array)
 	xor rdi,rdi
 	mov rdi,array
 	call drawBoard
-	;setting first parameter in check winner to array
+	
+	;; askLocation(array)
 	xor rdi,rdi
 	mov rdi,array
-	call checkWinner
-	;check if winner found, checkWinner returns 1 if so
-	xor r14,r14
-	mov r14,rax
-	cmp r14,1
-	je quit
-	;no winner found, continue playing
-	jmp compEasy
-compMove:
-	mov r11,rax
-	mov r12,array
-	add r12b,r11b
-	cmp byte[r12],32
-	je cpuMove
-	cmp byte[r12],32
-	jne getAnotherRandomNum
-cpuMove:
-	mov byte[r12],111
-	xor rdi,rdi
-	mov rdi,array
-	call checkWinner
-	xor r14,r14
-	mov r14,rax
-	cmp r14,1
-	je quit
-	jmp continue
-getAnotherRandomNum:
-		call randomNum
-		jmp compMove
+        call askLocation
 
+	;; cpu's location is set
+		;xor rdi,rdi
+		;xor rsi,rsi
+	
+		;mov rdi,16
+		;mov rsi,array
+		;call randomNum
+
+	xor r12,r12
+	xor r14,r14
+	xor r13,r13
+	
+	xor rdi,rdi
+	mov rdi,array
+	
+	call checkWinner
+	mov r12,rax
+	mov r14,rax
+	
+	mov r13d,10
+	
+	xor rdx,rdx
+	xor rax,rax
+	
+	mov eax,r14d
+	div r13d
+	
+	xor r13,r13
+	mov r13b,al
+
+	cmp r13b,0
+	jg ai_mode
+	
+	jmp compEasy
+	
+ai_mode:
+	xor rdi,rdi
+	xor rsi,rsi
+	
+	mov rdi,array
+	mov rsi,r12
+	
+	call o_marks_the_spot
+	
+	jmp compEasy
 quit:
+	
 	ret
         
