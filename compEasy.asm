@@ -17,13 +17,19 @@ winner:		resb 1
 compEasy:
 	;; parameters goes as follow: (rdi,rsi,rdx,rcx,r8,r9)	
 	;; askLocation(array)
+	xor rax,rax
 	xor rdi,rdi
 	mov rdi,array ;pass in array into ask Location
     call askLocation
-
+	xor rdi,rdi
+	mov rdi,array
+	call checkWinner
+	xor r14,r14
+	mov r14,rax
+	cmp r14,1
+	je quit
 	;; cpu's location is set
 	xor rdi,rdi
-	xor rsi,rsi
 	;pass in max and array into Random Num Generator
 	mov rdi,16
 	call randomNum
@@ -40,8 +46,8 @@ continue:
 	call checkWinner
 	;check if winner found, checkWinner returns 1 if so
 	xor r14,r14
-	mov r14b,al
-	cmp r14b,1
+	mov r14,rax
+	cmp r14,1
 	je quit
 	;no winner found, continue playing
 	jmp compEasy
@@ -55,6 +61,13 @@ compMove:
 	jne getAnotherRandomNum
 cpuMove:
 	mov byte[r12],111
+	xor rdi,rdi
+	mov rdi,array
+	call checkWinner
+	xor r14,r14
+	mov r14,rax
+	cmp r14,1
+	je quit
 	jmp continue
 getAnotherRandomNum:
 		call randomNum

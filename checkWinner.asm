@@ -1,4 +1,4 @@
-	
+
 	section .data
 printX: db "You Won!",10
 len_X:  equ $-printX
@@ -490,6 +490,7 @@ draw:
 		jmp printDraw
 		
 continue:
+		xor rax,rax
 		ret
 printDraw:
 	xor rax,rax
@@ -501,6 +502,7 @@ printDraw:
 	jmp finish
 		
 WonUser:
+	xor rdi,rdi
 	xor rax,rax
 	mov rax,1
 	mov rdi,1
@@ -509,6 +511,7 @@ WonUser:
 	syscall
 	jmp finish
 WonComp:
+	xor rdi,rdi
 	xor rax,rax
 	mov rax,1
 	mov rdi,1
