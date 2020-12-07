@@ -1,5 +1,6 @@
 	extern menu
 	extern compEasy
+	extern compHard
 
 	section .data
 new_line:		       db      10
@@ -15,11 +16,25 @@ menu_input:		resb 1
 
 	global main
 main:
+	xor r15,r15
+	call menu
+	mov byte[menu_input],al
 
-	call compEasy
+	cmp byte[menu_input],97
+	je goEasy
+	
+	cmp byte[menu_input],98
+	je goHard
+	
 	jmp exit
 
+goEasy:
+	call compEasy
+	jmp main
 
+goHard:
+	call compHard
+	jmp main
 exit:
 	xor rax,rax
 	mov rax,60

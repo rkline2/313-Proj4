@@ -1,4 +1,4 @@
-	extern printf
+	extern printf		
 	extern scanf
 	
 	section .data

@@ -8,40 +8,75 @@
         section .data
 	
 array:		db "                "
-fmt:		db "%d",10,0
+p_wins:		db "player wins!",0
+c_wins:		db "cpu wins!",0
+tie_msg:	db "no winner!",0
 	
+fmt:		db "%d",10,0
+fmt_s:		db "%s",10,0
         section .bss
 test:		resd 1
 winner:		resb 1
+num_moves:	resb 1
 	section .text
 	global compEasy
-        
-        
-compEasy:
+compEasy:	
+        mov byte[num_moves],0
+	jmp PlayItOut
+PlayItOut:
 	;; parameters goes as follow: (rdi,rsi,rdx,rcx,r8,r9)
 	;; rax value is returned
-	
-	;; printBoard(array)
+
+;;   printBoard(array)
 	xor rdi,rdi
 	mov rdi,array
 	call drawBoard
 	
-	;; askLocation(array)
-	xor rdi,rdi
-	mov rdi,array
-        call askLocation
-
-	;; cpu's location is set
-		;xor rdi,rdi
-		;xor rsi,rsi
-	
-		;mov rdi,16
-		;mov rsi,array
-		;call randomNum
-
+;; checkwinner ******************** checkwinner 
 	xor r12,r12
 	xor r14,r14
 	xor r13,r13
+
+	xor rdi,rdi
+	mov rdi,array
+
+	call checkWinner
+	mov r12,rax
+	mov r14,rax
+
+	; mov [test],eax 	;testing only!
+	; push rbp 		;testing only!
+	; mov rbp,rsp		;testing only!
+	; mov rdi,fmt		;testing only!
+	; mov rsi,[test]	;testing only!
+	; mov rax,0		;testing only!
+	; call printf		;testing only!
+	; pop rbp		;testing only!
+	
+
+	cmp r14b,2
+	je player_wins
+
+	cmp r14b,3
+	je cpu_wins
+
+	cmp byte[num_moves],16
+	jge tie_break
+
+;;  checkwinner ******************** checkwinner
+
+
+
+;;  askLocation(array)
+	xor rdi,rdi
+	mov rdi,array
+	call askLocation
+
+	inc byte[num_moves]
+;;   checkwinner ******************** checkwinner
+	xor r12,r12
+	xor r13,r13
+	xor r14,r14
 	
 	xor rdi,rdi
 	mov rdi,array
@@ -50,28 +85,30 @@ compEasy:
         mov r12,rax
 	mov r14,rax
 
-	mov [test],eax
 	
-	push rbp
-	mov rbp,rsp
-	mov rdi,fmt
-	mov rsi,[test]
-	mov rax,0
-
-	call printf
-	pop rbp
-
-	cmp r14b,0
-	je compEasy
+	;;  mov [test],eax        ;testing only!
+	;;  mov [test],eax        ;testing only!
+	;;  push rbp              ;testing only!
+	;;  mov rbp,rsp           ;testing only!
+	;;  mov rdi,fmt           ;testing only!
+	;;  mov rsi,[test]        ;testing only!
+	;;  mov rax,0             ;testing only!
+	;;  call printf           ;testing only!
+	;;  pop rbp               ;testing only!
+	
 	
 	cmp r14b,2
-	je quit
+	je player_wins
 	
 	cmp r14b,3
-	je quit
+	je cpu_wins
+
+	cmp byte[num_moves],16
+	jge tie_break
 		
-	jmp ai_mode 
-	
+	jmp get_random_val 
+;;   checkwinner ******************** checkwinner
+
 ai_mode:
 	xor rdi,rdi
 	xor rsi,rsi
@@ -80,19 +117,58 @@ ai_mode:
 	mov rsi,r12
 	
 	call o_marks_the_spot
+
+	inc byte[num_moves]
 	
-	jmp compEasy
+	jmp PlayItOut
 	
 get_random_val:
 ;;;  cpu's location is set
-	;; xor rdi,rdi
-	;; xor rsi,rsi
+	xor rdi,rdi
+	xor rsi,rsi
 
-	;; mov rdi,16
-	;; mov rsi,array
-	;; call randomNum
+	mov rdi,16
+	mov rsi,array
+	call randomNum
+
+	inc byte[num_moves]
 	
+	jmp PlayItOut
 	
+player_wins:
+	push rbp		
+	mov rbp,rsp	
+	mov rdi,fmt_s	
+	mov rsi,p_wins	
+	mov rax,0	
+
+	call printf	
+	pop rbp
+	
+	jmp quit
+cpu_wins:
+	push rbp
+	mov rbp,rsp
+	mov rdi,fmt_s
+	mov rsi,c_wins
+	mov rax,0
+
+	call printf
+	pop rbp
+
+	jmp quit
+
+tie_break:
+	push rbp
+	mov rbp,rsp
+	mov rdi,fmt_s
+	mov rsi,tie_msg
+	mov rax,0
+
+	call printf
+	pop rbp
+	
+	jmp quit
 quit:
 	
 	ret

@@ -1,4 +1,4 @@
-OBJS = askLocation.o compEasy.o drawBoard.o randomNum.o test2_main.o checkWinner.o o_marks_the_spot.o
+OBJS = menu.o askLocation.o compEasy.o compHard.o drawBoard.o randomNum.o main.o checkWinner.o o_marks_the_spot.o
 ASSFLAGS = nasm -f elf64
 CXX = gcc -m64
 
@@ -6,11 +6,17 @@ CXX = gcc -m64
 all: $(OBJS)
 	$(CXX) $(OBJS) -o test
 
+menu.o: menu.asm
+	$(ASSFLAGS) menu.asm
+
 askLocation.o: askLocation.asm
 	$(ASSFLAGS) askLocation.asm
 
 compEasy.o: compEasy.asm
 	$(ASSFLAGS) compEasy.asm
+
+compHard.o: compHard.asm
+	$(ASSFLAGS) compHard.asm
 
 drawBoard.o: drawBoard.c
 	gcc -c drawBoard.c
@@ -24,8 +30,8 @@ checkWinner.o: checkWinner.asm
 o_marks_the_spot.o: o_marks_the_spot.asm
 	$(ASSFLAGS) o_marks_the_spot.asm
 
-test2_main.o: test2_main.asm
-	$(ASSFLAGS) test2_main.asm
+main.o: main.asm
+	$(ASSFLAGS) main.asm
 
 clean:
 	rm -rf *.o
