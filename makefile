@@ -4,7 +4,7 @@ CXX = gcc -m64
 
 
 all: $(OBJS)
-	$(CXX) $(OBJS) -o test
+	$(CXX) $(OBJS) -o proj4
 
 menu.o: menu.asm
 	$(ASSFLAGS) menu.asm
@@ -35,5 +35,5 @@ main.o: main.asm
 
 clean:
 	rm -rf *.o
-	rm -rf test
+	rm -rf proj4
 	rm -f *~ *#
