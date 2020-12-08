@@ -87,7 +87,13 @@ menu2:
 	je quit
 	
 	cmp bl,99		;easter egg
-	je easteregg
+	jne restart
+	jmp easteregg
+	
+restart:
+	xor r14,r14
+	jmp invalid
+	
 invalid:	
 	;; print("Invalid Input!")
 	xor rdi,rdi
