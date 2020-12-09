@@ -44,20 +44,19 @@ PlayItOut:
 	mov r12,rax
 	mov r14,rax
 
-	mov [test],eax 	;testing only!
-	push rbp 		;testing only!
-	mov rbp,rsp		;testing only!
-	mov rdi,fmt		;testing only!
-	mov rsi,[test]	;testing only!
-	mov rax,0		;testing only!
-	call printf		;testing only!
-	pop rbp		;testing only!
-	
+	;; mov [test],eax        ;testing only!
+	;; push rbp              ;testing only!
+	;; mov rbp,rsp           ;testing only!
+	;; mov rdi,fmt           ;testing only!
+	;; mov rsi,[test]        ;testing only!
+	;; mov rax,0             ;testing only!
+	;; call printf           ;testing only!
+	;; pop rbp               ;testing only!
 
-	cmp r14b,2
+	cmp r14d,2
 	je player_wins
 
-	cmp r14b,3
+	cmp r14d,3
 	je cpu_wins
 
 	cmp byte[num_moves],16
@@ -85,22 +84,19 @@ PlayItOut:
         mov r12,rax
 	mov r14,rax
 
-	
-	mov [test],eax        ;testing only!
-	mov [test],eax        ;testing only!
-	push rbp              ;testing only!
-	mov rbp,rsp           ;testing only!
-	mov rdi,fmt           ;testing only!
-	mov rsi,[test]        ;testing only!
-	mov rax,0             ;testing only!
-	call printf           ;testing only!
-	pop rbp               ;testing only!
-	
-	
-	cmp r14b,2
+	;; mov [test],eax        ;testing only!
+	;; push rbp              ;testing only!
+	;; mov rbp,rsp           ;testing only!
+	;; mov rdi,fmt           ;testing only!
+	;; mov rsi,[test]        ;testing only!
+	;; mov rax,0             ;testing only!
+	;; call printf           ;testing only!
+	;; pop rbp               ;testing only!
+		
+	cmp r14d,2
 	je player_wins
 	
-	cmp r14b,3
+	cmp r14d,3
 	je cpu_wins
 
 	cmp byte[num_moves],16

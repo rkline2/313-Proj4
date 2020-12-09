@@ -54,10 +54,10 @@ PlayItOut:
 	;;  pop rbp               ;testing only!
 	
 	
-	cmp r14b,2
+	cmp r14d,2
 	je player_wins
 
-	cmp r14b,3
+	cmp r14d,3
 	je cpu_wins
 
 	cmp byte[num_moves],16
@@ -97,13 +97,13 @@ PlayItOut:
 	;;  pop rbp               ;testing only!
 	
 
-	cmp r14b,0
+	cmp r14d,0
 	je get_random_val
 	
-	cmp r14b,2
+	cmp r14d,2
 	je player_wins
 	
-	cmp r14b,3
+	cmp r14d,3
 	je cpu_wins
 
 	cmp byte[num_moves],16
