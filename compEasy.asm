@@ -44,14 +44,14 @@ PlayItOut:
 	mov r12,rax
 	mov r14,rax
 
-	; mov [test],eax 	;testing only!
-	; push rbp 		;testing only!
-	; mov rbp,rsp		;testing only!
-	; mov rdi,fmt		;testing only!
-	; mov rsi,[test]	;testing only!
-	; mov rax,0		;testing only!
-	; call printf		;testing only!
-	; pop rbp		;testing only!
+	mov [test],eax 	;testing only!
+	push rbp 		;testing only!
+	mov rbp,rsp		;testing only!
+	mov rdi,fmt		;testing only!
+	mov rsi,[test]	;testing only!
+	mov rax,0		;testing only!
+	call printf		;testing only!
+	pop rbp		;testing only!
 	
 
 	cmp r14b,2
@@ -86,15 +86,15 @@ PlayItOut:
 	mov r14,rax
 
 	
-	;;  mov [test],eax        ;testing only!
-	;;  mov [test],eax        ;testing only!
-	;;  push rbp              ;testing only!
-	;;  mov rbp,rsp           ;testing only!
-	;;  mov rdi,fmt           ;testing only!
-	;;  mov rsi,[test]        ;testing only!
-	;;  mov rax,0             ;testing only!
-	;;  call printf           ;testing only!
-	;;  pop rbp               ;testing only!
+	mov [test],eax        ;testing only!
+	mov [test],eax        ;testing only!
+	push rbp              ;testing only!
+	mov rbp,rsp           ;testing only!
+	mov rdi,fmt           ;testing only!
+	mov rsi,[test]        ;testing only!
+	mov rax,0             ;testing only!
+	call printf           ;testing only!
+	pop rbp               ;testing only!
 	
 	
 	cmp r14b,2
