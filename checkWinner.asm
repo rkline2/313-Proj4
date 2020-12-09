@@ -1474,52 +1474,106 @@ set_almost_c_diag2:
 	
 all_almost_cmp:
 ; computer ********************* computer
-	cmp byte[c_row0],1
+	xor r11,r11
+	mov r11,[c_row0]
+	cmp r11b,1
 	je almost_c_row0
-	cmp byte[c_row1],1
+	
+	xor r11,r11
+	mov r11,[c_row1]
+	cmp r11b,1
 	je almost_c_row1
-	cmp byte[c_row2],1
+	
+	xor r11,r11
+	mov r11,[c_row2]
+	cmp r11b,1
 	je almost_c_row2
-	cmp byte[c_row3],1
+	
+	xor r11,r11
+	mov r11,[c_row3]
+	cmp r11b,1
 	je almost_c_row3
 	
-	cmp byte[c_col0],1
+	xor r11,r11
+	mov r11,[c_col0]
+	cmp r11b,1
 	je almost_c_col0
-	cmp byte[c_col1],1
+	
+	xor r11,r11
+	mov r11,[c_col1]
+	cmp r11b,1
 	je almost_c_col1
-	cmp byte[c_col2],1
+	
+	xor r11,r11
+	mov r11,[c_col2]
+	cmp r11b,1
 	je almost_c_col2
-	cmp byte[c_col3],1
+	
+	xor r11,r11
+	mov r11,[c_col3]
+	cmp r11b,1
 	je almost_c_col3
 	
-	cmp byte[c_diag1],1
+	xor r11,r11
+	mov r11,[c_diag1]
+	cmp r11b,1
 	je almost_c_diag1
-	cmp byte[c_diag2],1
+	
+	xor r11,r11
+	mov r11,[c_diag2]
+	cmp r11b,1
 	je almost_c_diag2
 ; computer ********************* computer
 
 ; player ********************* player
-	cmp byte[p_row0],1
+	xor r11,r11
+	mov r11,[p_row0]
+	cmp r11b,1
 	je almost_p_row0
-	cmp byte[p_row1],1
+	
+	xor r11,r11
+	mov r11,[p_row1]
+	cmp r11b,1
 	je almost_p_row1
-	cmp byte[p_row2],1
+	
+	xor r11,r11
+	mov r11,[p_row2]
+	cmp r11b,1
 	je almost_p_row2
-	cmp byte[p_row3],1
+	
+	xor r11,r11
+	mov r11,[p_row3]
+	cmp r11b,1
 	je almost_p_row3
 	
-	cmp byte[p_col0],1
+	xor r11,r11
+	mov r11,[p_col0]
+	cmp r11b,1
 	je almost_p_col0
-	cmp byte[p_col1],1
+	
+	xor r11,r11
+	mov r11,[p_col1]
+	cmp r11b,1
 	je almost_p_col1
-	cmp byte[p_col2],1
+	
+	xor r11,r11
+	mov r11,[p_col2]
+	cmp r11b,1
 	je almost_p_col2
-	cmp byte[p_col3],1
+	
+	xor r11,r11
+	mov r11,[p_col3]
+	cmp r11b,1
 	je almost_p_col3
 	
-	cmp byte[p_diag1],1
+	xor r11,r11
+	mov r11,[p_diag1]
+	cmp r11b,1
 	je almost_p_diag1
-	cmp byte[p_diag2],1
+	
+	xor r11,r11
+	mov r11,[p_diag2]
+	cmp r11b,1
 	je almost_p_diag2
 ; player ********************* player
 	
