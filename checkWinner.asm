@@ -201,12 +201,12 @@ cmp_almost_c_row0:
 	jmp row1
 	
 set_almost_p_row0:
-	mov byte[p_row0],1
+	add byte[p_row0],1
 	
 	jmp row1
 	
 set_almost_c_row0:
-	mov byte[c_row0],1
+	add byte[c_row0],1
 	
 	jmp row1
 	
@@ -342,12 +342,12 @@ cmp_almost_c_row1:
 	jmp row2
 	
 set_almost_p_row1:
-	mov byte[p_row1],1
+	add byte[p_row1],1
 	
 	jmp row2
 	
 set_almost_c_row1:
-	mov byte[c_row1],1
+	add byte[c_row1],1
 	
 	jmp row2
 	
@@ -483,12 +483,12 @@ cmp_almost_c_row2:
 	jmp row3
 	
 set_almost_p_row2:
-	mov byte[p_row2],1
+	add byte[p_row2],1
 	
 	jmp row3
 	
 set_almost_c_row2:
-	mov byte[c_row2],1
+	add byte[c_row2],1
 	
 	jmp row3
 	
@@ -624,12 +624,12 @@ cmp_almost_c_row3:
 	jmp col0
 	
 set_almost_p_row3:
-	mov byte[p_row3],1
+	add byte[p_row3],1
 	
 	jmp col0
 	
 set_almost_c_row3:
-	mov byte[c_row3],1
+	add byte[c_row3],1
 	
 	jmp col0
 	
@@ -764,12 +764,12 @@ cmp_almost_c_col0:
 	jmp col1
 	
 set_almost_p_col0:
-	mov byte[p_col0],1
+	add byte[p_col0],1
 	
 	jmp col1
 	
 set_almost_c_col0:
-	mov byte[c_col0],1
+	add byte[c_col0],1
 	
 	jmp col1
 	
@@ -903,12 +903,12 @@ cmp_almost_c_col1:
 	jmp col2
 	
 set_almost_p_col1:
-	mov byte[p_col1],1
+	add byte[p_col1],1
 	
 	jmp col2
 	
 set_almost_c_col1:
-	mov byte[c_col1],1
+	add byte[c_col1],1
 	
 	jmp col2
 	
@@ -1042,12 +1042,12 @@ cmp_almost_c_col2:
 	jmp col3
 	
 set_almost_p_col2:
-	mov byte[p_col2],1
+	add byte[p_col2],1
 	
 	jmp col3
 	
 set_almost_c_col2:
-	mov byte[c_col2],1
+	add byte[c_col2],1
 	
 	jmp col3
 
@@ -1182,12 +1182,12 @@ cmp_almost_c_col3:
 	jmp diag1
 	
 set_almost_p_col3:
-	mov byte[p_col3],1
+	add byte[p_col3],1
 	
 	jmp diag1
 	
 set_almost_c_col3:
-	mov byte[c_col3],1
+	add byte[c_col3],1
 	
 	jmp diag1
 
@@ -1322,12 +1322,12 @@ cmp_almost_c_diag1:
 	jmp diag2
 	
 set_almost_p_diag1:
-	mov byte[p_diag1],1
+	add byte[p_diag1],1
 	
 	jmp diag2
 	
 set_almost_c_diag1:
-	mov byte[c_diag1],1
+	add byte[c_diag1],1
 	
 	jmp diag2
 	
@@ -1463,12 +1463,12 @@ cmp_almost_c_diag2:
 	jmp all_almost_cmp
 	
 set_almost_p_diag2:
-	mov byte[p_diag2],1
+	add byte[p_diag2],1
 	
 	jmp all_almost_cmp
 	
 set_almost_c_diag2:
-	mov byte[c_diag2],1
+	add byte[c_diag2],1
 	
 	jmp all_almost_cmp
 	
