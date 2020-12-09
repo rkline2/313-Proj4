@@ -6,6 +6,31 @@ len_O:  equ $-printO
 	section .bss
 winner: resb 1
 	
+c_row0: resb 1
+c_row1: resb 1
+c_row2: resb 1
+c_row3: resb 1
+
+c_col0: resb 1
+c_col1: resb 1
+c_col2: resb 1
+c_col3: resb 1
+
+c_diag1: resb 1
+c_diag2: resb 1
+
+p_row0: resb 1
+p_row1: resb 1
+p_row2: resb 1
+p_row3: resb 1
+
+p_col0: resb 1
+p_col1: resb 1
+p_col2: resb 1
+p_col3: resb 1
+
+p_diag1: resb 1
+p_diag2: resb 1
 	
 	section .text
 	global checkWinner
@@ -16,6 +41,36 @@ checkWinner:
 	xor r9,r9
 	
 	mov r15,rdi 		;r15 point to board array at begining r15=board[0]
+	
+; computer ********************* computer
+	mov byte[c_row0],0
+	mov byte[c_row1],0
+	mov byte[c_row2],0
+	mov byte[c_row3],0
+	
+	mov byte[c_col0],0
+	mov byte[c_col1],0
+	mov byte[c_col2],0
+	mov byte[c_col3],0
+	
+	mov byte[c_diag1],0
+	mov byte[c_diag2],0
+; computer ********************* computer
+
+; player ********************* player
+	mov byte[p_row0],0
+	mov byte[p_row1],0
+	mov byte[p_row2],0
+	mov byte[p_row3],0
+	
+	mov byte[p_col0],0
+	mov byte[p_col1],0
+	mov byte[p_col2],0
+	mov byte[p_col3],0
+	
+	mov byte[p_diag1],0
+	mov byte[p_diag2],0
+; player ********************* player
 	
 	jmp row0
 		
@@ -135,13 +190,23 @@ cmp_row0:
 
 cmp_almost_p_row0:
 	cmp r10,1
-	je almost_p_row0
+	je set_almost_p_row0
 	
 	jmp row1
 	
 cmp_almost_c_row0:
 	cmp r10,1
-	je almost_c_row0
+	je set_almost_c_row0
+	
+	jmp row1
+	
+set_almost_p_row0:
+	mov byte[p_row0],1
+	
+	jmp row1
+	
+set_almost_c_row0:
+	mov byte[c_row0],1
 	
 	jmp row1
 	
@@ -266,14 +331,24 @@ cmp_row1:
 
 cmp_almost_p_row1:
 	cmp r10,1
-	je almost_p_row1
-
+	je set_almost_p_row1
+	
 	jmp row2
-
+	
 cmp_almost_c_row1:
 	cmp r10,1
-	je almost_c_row1
-
+	je set_almost_c_row1
+	
+	jmp row2
+	
+set_almost_p_row1:
+	mov byte[p_row1],1
+	
+	jmp row2
+	
+set_almost_c_row1:
+	mov byte[c_row1],1
+	
 	jmp row2
 	
 ;;  row 2 ********************************************* row 2
@@ -394,17 +469,28 @@ cmp_row2:
 	je cmp_almost_c_row2 ;change here
 	jmp row3     ;change here
 
+
 cmp_almost_p_row2:
 	cmp r10,1
-	je almost_p_row2 ;change here
-
-	jmp row3	;change here
-
+	je set_almost_p_row2
+	
+	jmp row3
+	
 cmp_almost_c_row2:
 	cmp r10,1
-	je almost_c_row2 ;change here
-
-	jmp row3	;change here
+	je set_almost_c_row2
+	
+	jmp row3
+	
+set_almost_p_row2:
+	mov byte[p_row2],1
+	
+	jmp row3
+	
+set_almost_c_row2:
+	mov byte[c_row2],1
+	
+	jmp row3
 	
 
 ;;  row 3 ********************************************* row 3
@@ -527,15 +613,25 @@ cmp_row3:
 
 cmp_almost_p_row3:
 	cmp r10,1
-	je almost_p_row3 ;change here
-
-	jmp col0	;change here
-
+	je set_almost_p_row3
+	
+	jmp col0
+	
 cmp_almost_c_row3:
 	cmp r10,1
-	je almost_c_row3 ;change here
-
-	jmp col0	;change here
+	je set_almost_c_row3
+	
+	jmp col0
+	
+set_almost_p_row3:
+	mov byte[p_row3],1
+	
+	jmp col0
+	
+set_almost_c_row3:
+	mov byte[c_row3],1
+	
+	jmp col0
 	
 ;;   col 0 ********************************************* col 0
 	
@@ -657,15 +753,25 @@ cmp_col0:
 
 cmp_almost_p_col0:
 	cmp r10,1
-	je almost_p_col0 ;change here
-
-	jmp col1	;change here
-
+	je set_almost_p_col0
+	
+	jmp col1
+	
 cmp_almost_c_col0:
 	cmp r10,1
-	je almost_c_col0 ;change here
-
-	jmp col1	;change here
+	je set_almost_c_col0
+	
+	jmp col1
+	
+set_almost_p_col0:
+	mov byte[p_col0],1
+	
+	jmp col1
+	
+set_almost_c_col0:
+	mov byte[c_col0],1
+	
+	jmp col1
 	
 ;;    col 1 ********************************************* col 1
 col1:
@@ -786,15 +892,25 @@ cmp_col1:
 
 cmp_almost_p_col1:
 	cmp r10,1
-	je almost_p_col1 ;change here
-
-	jmp col2	;change here
-
+	je set_almost_p_col1
+	
+	jmp col2
+	
 cmp_almost_c_col1:
 	cmp r10,1
-	je almost_c_col1 ;change here
-
-	jmp col2	;change here
+	je set_almost_c_col1
+	
+	jmp col2
+	
+set_almost_p_col1:
+	mov byte[p_col1],1
+	
+	jmp col2
+	
+set_almost_c_col1:
+	mov byte[c_col1],1
+	
+	jmp col2
 	
 ;;    col 2 ********************************************* col 2
 col2:
@@ -915,15 +1031,25 @@ cmp_col2:
 
 cmp_almost_p_col2:
 	cmp r10,1
-	je almost_p_col2 ;change here
-
-	jmp col3	;change here
-
+	je set_almost_p_col2
+	
+	jmp col3
+	
 cmp_almost_c_col2:
 	cmp r10,1
-	je almost_c_col2 ;change here
-
-	jmp col3	;change here
+	je set_almost_c_col2
+	
+	jmp col3
+	
+set_almost_p_col2:
+	mov byte[p_col2],1
+	
+	jmp col3
+	
+set_almost_c_col2:
+	mov byte[c_col2],1
+	
+	jmp col3
 
 ;;     col 3 ********************************************* col 3
 
@@ -1045,15 +1171,25 @@ cmp_col3:
 
 cmp_almost_p_col3:
 	cmp r10,1
-	je almost_p_col3 ;change here
-
-	jmp diag1	;change here
-
+	je set_almost_p_col3
+	
+	jmp diag1
+	
 cmp_almost_c_col3:
 	cmp r10,1
-	je almost_c_col3 ;change here
-
-	jmp diag1	;change here
+	je set_almost_c_col3
+	
+	jmp diag1
+	
+set_almost_p_col3:
+	mov byte[p_col3],1
+	
+	jmp diag1
+	
+set_almost_c_col3:
+	mov byte[c_col3],1
+	
+	jmp diag1
 
 ;;  diag 1 ********************************************* diag 1
 
@@ -1175,15 +1311,25 @@ cmp_diag1:
 
 cmp_almost_p_diag1:
 	cmp r10,1
-	je almost_p_diag1 ;change here
-
-	jmp diag2	;change here
-
+	je set_almost_p_diag1
+	
+	jmp diag2
+	
 cmp_almost_c_diag1:
 	cmp r10,1
-	je almost_c_diag1 ;change here
-
-	jmp diag2	;change here
+	je set_almost_c_diag1
+	
+	jmp diag2
+	
+set_almost_p_diag1:
+	mov byte[p_diag1],1
+	
+	jmp diag2
+	
+set_almost_c_diag1:
+	mov byte[c_diag1],1
+	
+	jmp diag2
 	
 ;;  diag 2 ********************************************* diag 2
 
@@ -1306,16 +1452,78 @@ cmp_diag2:
 
 cmp_almost_p_diag2:
 	cmp r10,1
-	je almost_p_diag2 ;change here
-
-	jmp default_ret	;change here
-
+	je set_almost_p_diag2
+	
+	jmp all_almost_cmp
+	
 cmp_almost_c_diag2:
 	cmp r10,1
-	je almost_c_diag2 ;change here
+	je set_almost_c_diag2
+	
+	jmp all_almost_cmp
+	
+set_almost_p_diag2:
+	mov byte[p_diag2],1
+	
+	jmp all_almost_cmp
+	
+set_almost_c_diag2:
+	mov byte[c_diag2],1
+	
+	jmp all_almost_cmp
+	
+all_almost_cmp:
+; computer ********************* computer
+	cmp byte[c_row0],1
+	je almost_c_row0
+	cmp byte[c_row1],1
+	je almost_c_row1
+	cmp byte[c_row2],1
+	je almost_c_row2
+	cmp byte[c_row3],1
+	je almost_c_row3
+	
+	cmp byte[c_col0],1
+	je almost_c_col0
+	cmp byte[c_col1],1
+	je almost_c_col1
+	cmp byte[c_col2],1
+	je almost_c_col2
+	cmp byte[c_col3],1
+	je almost_c_col3
+	
+	cmp byte[c_diag1],1
+	je almost_c_diag1
+	cmp byte[c_diag2],1
+	je almost_c_diag2
+; computer ********************* computer
 
-	jmp default_ret	;change here
-
+; player ********************* player
+	cmp byte[p_row0],1
+	je almost_p_row0
+	cmp byte[p_row1],1
+	je almost_p_row1
+	cmp byte[p_row2],1
+	je almost_p_row2
+	cmp byte[p_row3],1
+	je almost_p_row3
+	
+	cmp byte[p_col0],1
+	je almost_p_col0
+	cmp byte[p_col1],1
+	je almost_p_col1
+	cmp byte[p_col2],1
+	je almost_p_col2
+	cmp byte[p_col3],1
+	je almost_p_col3
+	
+	cmp byte[p_diag1],1
+	je almost_p_diag1
+	cmp byte[p_diag2],1
+	je almost_p_diag2
+; player ********************* player
+	
+	jmp default_ret
 	
 ;; return values are opcode for "almost"
 	
@@ -1450,8 +1658,3 @@ WonComp:
 	mov rax,3
 	
 	ret
-
-		
-	
-		
-	
