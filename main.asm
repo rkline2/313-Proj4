@@ -1,3 +1,10 @@
+;;  Project 4
+;;  Authors: Tehila Levin(NG71810) & Rooklyn Kline(TU79695)
+;;  Description: In this project, we developed a game of
+;;  tic tac toe where a player will be playing against
+;;  the computer. Unlike regular titactoe, our game
+;;  will be played on a 4x4 board.
+	
 	extern menu
 	extern compEasy
 	extern compHard
