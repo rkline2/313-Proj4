@@ -1,8 +1,13 @@
+	extern printf
+	
 	section .data
-printX: db "X Won!",10
+printX: db "X Won!",10,0
 len_X:  equ $-printX
-printO: db "COMPUTER WINS!",10
+printO: db "COMPUTER WINS!",10,0
 len_O:  equ $-printO
+
+fmt:	db "%d",10,0
+	
 	section .bss
 winner: resb 1
 	
@@ -1448,7 +1453,7 @@ cmp_diag2:
 	cmp r9,3        ; cpu is almost winner
 	je cmp_almost_c_diag2 ;change here
 	
-	jmp default_ret   ;change here
+	jmp all_almost_cmp   ;change here
 
 cmp_almost_p_diag2:
 	cmp r10,1
